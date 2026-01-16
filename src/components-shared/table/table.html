@@ -1,3 +1,18 @@
-<table border="1" cellpadding="8" cellspacing="0">
-  <ng-content></ng-content>
+<table class="table">
+  <thead>
+    <tr>
+      <th *ngFor="let c of columns; trackBy: trackByIndex">{{ c.label }}</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr
+      *ngFor="let r of rows; trackBy: trackByIndex"
+      (click)="rowClick.emit(r)"
+      class="row"
+      title="Click to open detail"
+    >
+      <td *ngFor="let c of columns; trackBy: trackByIndex">{{ r[c.key] }}</td>
+    </tr>
+  </tbody>
 </table>

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CardComponent } from '../components-shared/card/card';
 
@@ -10,5 +10,6 @@ import { CardComponent } from '../components-shared/card/card';
 })
 export class DetailComponent {
   private route = inject(ActivatedRoute);
-  id = this.route.snapshot.paramMap.get('id');
+
+  id = computed(() => this.route.snapshot.paramMap.get('id'));
 }

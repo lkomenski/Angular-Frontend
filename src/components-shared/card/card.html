@@ -1,3 +1,10 @@
-<div style="border:1px solid #ccc; padding:12px; margin:12px 0;">
-  <ng-content></ng-content>
-</div>
+<section class="card">
+  @if (title) {
+    <header class="card-header">
+      <h2>{{ title }}</h2>
+    </header>
+  }
+  <div class="card-body">
+    <ng-content></ng-content>
+  </div>
+</section>

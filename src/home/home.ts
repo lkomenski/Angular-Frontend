@@ -7,6 +7,5 @@ import { CardComponent } from '../components-shared/card/card';
   standalone: true,
   imports: [RouterLink, CardComponent],
   templateUrl: './home.html',
-  styleUrls: ['./home.css'],
 })
 export class HomeComponent {}

@@ -1,11 +1,9 @@
-<app-card>
-  <h1>Home</h1>
+<app-card title="Home">
+  <p>This is a stub project to demonstrate Angular routing, params, guards, and reusable components.</p>
 
-  <nav>
-    <a routerLink="/list">List</a> |
-    <a routerLink="/create">Create</a> |
-    <a href="https://angular.dev" target="_blank" rel="noopener noreferrer">
-      Angular Docs (External)
-    </a>
-  </nav>
+  <div style="margin-top: 10px; display:flex; gap:12px; flex-wrap:wrap;">
+    <a routerLink="/list">Go to List</a>
+    <a routerLink="/detail/1">Go to Detail (ID 1)</a>
+    <a routerLink="/create">Go to Create</a>
+  </div>
 </app-card>

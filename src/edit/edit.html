@@ -1,8 +1,22 @@
-<app-card>
-  <h2>{{ id ? 'Edit Item ' + id : 'Create Item' }}</h2>
+<app-card [title]="mode() + (id() ? ' Item ' + id() : ' Item')">
+  <p>This is a stub form using reusable form-field components.</p>
 
-  <form>
-    <app-form-field label="Name"></app-form-field>
-    <app-form-field label="Description"></app-form-field>
-  </form>
+  <app-form-field
+    label="Name"
+    placeholder="Enter a name"
+    [value]="name"
+    (valueChange)="name = $event"
+  ></app-form-field>
+
+  <app-form-field
+    label="Category"
+    placeholder="Enter a category"
+    [value]="category"
+    (valueChange)="category = $event"
+  ></app-form-field>
+
+  <div style="margin-top: 12px; display:flex; gap:12px; flex-wrap:wrap;">
+    <button (click)="save()">Save</button>
+    <a routerLink="/list">Cancel</a>
+  </div>
 </app-card>

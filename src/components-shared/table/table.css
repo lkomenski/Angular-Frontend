@@ -1,0 +1,16 @@
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.table th,
+.table td {
+  border: 1px solid #e6e6e6;
+  padding: 10px;
+  text-align: left;
+}
+.row {
+  cursor: pointer;
+}
+.row:hover {
+  background: #f7f7f7;
+}

@@ -1,14 +1,20 @@
 <nav style="padding: 12px; display: flex; gap: 12px; flex-wrap: wrap;">
+  <!-- Internal navigation -->
   <a routerLink="/">Home</a>
   <a routerLink="/list">List</a>
   <a routerLink="/create">Create/Edit</a>
 
-  <!-- external link requirement -->
-  <a href="https://angular.dev" target="_blank" rel="noopener noreferrer">
+  <!-- External link (assignment requirement) -->
+  <a
+    href="https://angular.dev"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
     Angular Docs (External)
   </a>
 </nav>
 
 <hr />
 
+<!-- Routed pages render here -->
 <router-outlet></router-outlet>

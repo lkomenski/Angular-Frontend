@@ -1,0 +1,16 @@
+.field {
+  display: block;
+  margin: 10px 0;
+}
+.label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.input {
+  width: 100%;
+  max-width: 420px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+}

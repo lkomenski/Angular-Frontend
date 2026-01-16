@@ -1,4 +1,10 @@
-<label style="display:block; margin:10px 0;">
-  <strong>{{ label }}</strong><br />
-  <input type="text" />
+<label class="field">
+  <span class="label">{{ label }}</span>
+  <input
+    class="input"
+    [type]="type"
+    [value]="value"
+    [placeholder]="placeholder"
+    (input)="onInput($event)"
+  />
 </label>
