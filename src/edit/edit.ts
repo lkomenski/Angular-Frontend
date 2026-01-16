@@ -8,11 +8,12 @@ import { FormFieldComponent } from '../components-shared/form-field/form-field';
   standalone: true,
   imports: [RouterLink, CardComponent, FormFieldComponent],
   templateUrl: './edit.html',
+  styleUrls: ['./edit.css'],
 })
 export class EditComponent {
   private route = inject(ActivatedRoute);
 
-  id = computed(() => this.route.snapshot.paramMap.get('id')); // null on /create
+  id = computed(() => this.route.snapshot.paramMap.get('id'));
   mode = computed(() => (this.id() ? 'Edit' : 'Create'));
 
   name = '';

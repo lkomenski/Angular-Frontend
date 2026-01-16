@@ -1,9 +1,193 @@
-<app-card title="Home">
-  <p>This is a stub project to demonstrate Angular routing, params, guards, and reusable components.</p>
-
-  <div style="margin-top: 10px; display:flex; gap:12px; flex-wrap:wrap;">
-    <a routerLink="/list">Go to List</a>
-    <a routerLink="/detail/1">Go to Detail (ID 1)</a>
-    <a routerLink="/create">Go to Create</a>
+<div class="page" role="presentation">
+  <!-- Decorative background (hidden from assistive tech) -->
+  <div class="bg" aria-hidden="true">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+    <div class="grid"></div>
   </div>
-</app-card>
+
+  <!-- Screen-reader announcements -->
+  <p class="sr-only" aria-live="polite" aria-atomic="true">
+    {{ liveMessage() }}
+  </p>
+
+  <header class="hero" aria-label="Home dashboard">
+    <div class="hero-left">
+      <p class="badge" aria-label="Project badge">Angular 21 • Signals • A11y</p>
+
+      <h1 class="title">
+        A modern <span class="title-accent">routing demo</span> with polish.
+      </h1>
+
+      <p class="subtitle">
+        This home page demonstrates state with <strong>signals</strong>, semantic layout, and accessible
+        navigation — while still staying lightweight.
+      </p>
+
+      <nav class="cta" aria-label="Quick actions">
+        <a class="btn primary" routerLink="/list">Explore List</a>
+        <a class="btn" routerLink="/create">Create Item</a>
+        <a class="btn ghost" routerLink="/detail/1">Open Detail #1</a>
+      </nav>
+
+      <section class="stats" aria-label="Summary stats">
+        <article class="stat" aria-label="Total items">
+          <p class="stat-num">{{ stats().total }}</p>
+          <p class="stat-label">Items</p>
+        </article>
+
+        <article class="stat" aria-label="Total categories">
+          <p class="stat-num">{{ stats().categories }}</p>
+          <p class="stat-label">Categories</p>
+        </article>
+
+        <article class="stat" aria-label="Latest update">
+          <p class="stat-num">{{ stats().latest }}</p>
+          <p class="stat-label">Latest Update</p>
+        </article>
+      </section>
+    </div>
+
+    <aside class="hero-right" aria-label="Search and tips">
+      <!-- Search panel -->
+      <app-card ariaLabel="Search panel">
+        <section aria-labelledby="search-title">
+          <header class="panel-header">
+            <div>
+              <h2 id="search-title" class="panel-title">Search Items</h2>
+              <p class="panel-sub">Filter by name, category, or ID.</p>
+            </div>
+
+            <button
+              class="icon-btn"
+              type="button"
+              (click)="clearSearch()"
+              [attr.aria-label]="query() ? 'Clear search' : 'Search is already empty'"
+            >
+              ✕
+            </button>
+          </header>
+
+          <form class="search" role="search" aria-label="Search items">
+            <label class="sr-only" for="item-search">Search items</label>
+            <input
+              id="item-search"
+              class="search-input"
+              type="text"
+              [value]="query()"
+              (input)="setQuery($any($event.target).value)"
+              (keydown)="onSearchKeydown($event)"
+              placeholder="Try: demo, modern, 3…"
+              autocomplete="off"
+              aria-describedby="search-help"
+            />
+            <p id="search-help" class="search-hint">
+              Tip: Press <kbd>Esc</kbd> to clear.
+            </p>
+          </form>
+
+          <section class="list" aria-label="Search results">
+            @if (filtered().length === 0) {
+              <div class="empty" role="status">
+                <p class="empty-title">No matches</p>
+                <p class="empty-sub">Try a different keyword.</p>
+              </div>
+            } @else {
+              <ul class="result-list" role="list">
+                @for (it of filtered(); track it.id) {
+                  <li>
+                    <a
+                      class="row"
+                      [routerLink]="['/detail', it.id]"
+                      [attr.aria-label]="'View details for ' + it.name"
+                    >
+                      <div class="row-left">
+                        <span class="pill" aria-label="Item id">#{{ it.id }}</span>
+                        <span class="row-text">
+                          <span class="row-name">{{ it.name }}</span>
+                          <span class="row-meta">{{ it.category }} • {{ it.updated }}</span>
+                        </span>
+                      </div>
+                      <span class="row-right" aria-hidden="true">View →</span>
+                    </a>
+                  </li>
+                }
+              </ul>
+            }
+          </section>
+        </section>
+      </app-card>
+
+      <!-- Tips panel -->
+      <app-card ariaLabel="Demo guide panel">
+        <section aria-labelledby="tips-title">
+          <header class="panel-header">
+            <div>
+              <h2 id="tips-title" class="panel-title">Demo Guide</h2>
+              <p class="panel-sub">Optional notes for your walkthrough.</p>
+            </div>
+
+            <button
+              class="link-btn"
+              type="button"
+              (click)="toggleTips()"
+              [attr.aria-expanded]="showTips()"
+              aria-controls="tips-content"
+            >
+              {{ showTips() ? 'Hide' : 'Show' }}
+            </button>
+          </header>
+
+          <div id="tips-content">
+            @if (showTips()) {
+              <ul class="tip-list">
+                <li><strong>List:</strong> click a row to navigate using route parameters.</li>
+                <li><strong>Detail:</strong> reads <code>:id</code> from the URL.</li>
+                <li><strong>Create/Edit:</strong> route guard placeholder is applied.</li>
+              </ul>
+
+              <nav class="mini-actions" aria-label="Tip shortcuts">
+                <a class="mini" routerLink="/list">Go to List</a>
+                <a class="mini" routerLink="/create">Create</a>
+                <a class="mini" href="https://angular.dev" target="_blank" rel="noopener noreferrer">
+                  External Docs ↗
+                </a>
+              </nav>
+            }
+          </div>
+        </section>
+      </app-card>
+    </aside>
+  </header>
+
+  <main class="lower" aria-label="Recent items">
+    <app-card ariaLabel="Recent items panel">
+      <section aria-labelledby="recent-title" class="wide">
+        <header>
+          <h2 id="recent-title" class="panel-title">Recent Items</h2>
+          <p class="panel-sub">Static data, but structured like a real dashboard.</p>
+        </header>
+
+        <div class="recent">
+          @for (it of recent(); track it.id) {
+            <article class="recent-card" aria-label="Recent item">
+              <header class="recent-top">
+                <span class="pill alt">#{{ it.id }}</span>
+                <span class="tag">{{ it.category }}</span>
+              </header>
+
+              <h3 class="recent-name">{{ it.name }}</h3>
+              <p class="recent-meta">Updated: {{ it.updated }}</p>
+
+              <p class="recent-actions">
+                <a class="mini" [routerLink]="['/detail', it.id]">View</a>
+                <a class="mini" [routerLink]="['/edit', it.id]">Edit</a>
+              </p>
+            </article>
+          }
+        </div>
+      </section>
+    </app-card>
+  </main>
+</div>

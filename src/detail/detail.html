@@ -1,8 +1,16 @@
-<app-card title="Detail">
-  <p>Showing details for item ID: <strong>{{ id() }}</strong></p>
+<section class="page">
+  <header class="page-header">
+    <h1 class="page-title">Detail</h1>
+    <p class="page-subtitle">Showing item ID from the URL parameter.</p>
+  </header>
 
-  <div style="margin-top: 10px; display:flex; gap:12px; flex-wrap:wrap;">
-    <a routerLink="/list">Back to List</a>
-    <a [routerLink]="['/edit', id()]">Edit this item</a>
-  </div>
-</app-card>
+  <app-card ariaLabel="Detail page content">
+    <p><span class="pill">ID</span> <strong>{{ id() }}</strong></p>
+    <p class="muted">This is a stub detail view. Add fields here later if you want.</p>
+
+    <div class="actions">
+      <a class="btn" routerLink="/list">Back to List</a>
+      <a class="btn primary" [routerLink]="['/edit', id()]">Edit this item</a>
+    </div>
+  </app-card>
+</section>

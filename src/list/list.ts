@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { CardComponent } from '../components-shared/card/card';
 import { TableComponent } from '../components-shared/table/table';
 
@@ -8,8 +8,9 @@ type Item = { id: number; name: string; category: string };
 @Component({
   selector: 'app-list',
   standalone: true,
-  imports: [RouterLink, CardComponent, TableComponent],
+  imports: [CardComponent, TableComponent],
   templateUrl: './list.html',
+  styleUrls: ['./list.css'],
 })
 export class ListComponent {
   columns = [

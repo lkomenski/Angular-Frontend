@@ -1,9 +1,15 @@
-<app-card title="List">
-  <p>Click any row to open its Detail page (route param).</p>
+<section class="page">
+  <header class="page-header">
+    <h1 class="page-title">List</h1>
+    <p class="page-subtitle">Click a row to open Detail (route parameter).</p>
+  </header>
 
-  <app-table
-    [columns]="columns"
-    [rows]="rows"
-    (rowClick)="openDetail($event)"
-  ></app-table>
-</app-card>
+  <app-card ariaLabel="List table content">
+    <app-table [columns]="columns" [rows]="rows" (rowClick)="openDetail($event)"></app-table>
+  </app-card>
+
+  <div class="actions" aria-label="List actions">
+    <a class="btn ghost" routerLink="/">Back Home</a>
+    <a class="btn primary" routerLink="/create">Create Item</a>
+  </div>
+</section>

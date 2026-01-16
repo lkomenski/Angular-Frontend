@@ -1,20 +1,36 @@
-<nav style="padding: 12px; display: flex; gap: 12px; flex-wrap: wrap;">
-  <!-- Internal navigation -->
-  <a routerLink="/">Home</a>
-  <a routerLink="/list">List</a>
-  <a routerLink="/create">Create/Edit</a>
+<div class="shell">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
 
-  <!-- External link (assignment requirement) -->
-  <a
-    href="https://angular.dev"
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    Angular Docs (External)
-  </a>
-</nav>
+  <header class="app-header">
+    <div class="header-inner container">
+      <div class="brand" aria-label="Application brand">
+        <div class="logo" aria-hidden="true">A</div>
+        <div>
+          <div class="brand-title">Angular Frontend</div>
+          <div class="brand-subtitle">Modern routing + signals + a11y</div>
+        </div>
+      </div>
 
-<hr />
+      <nav class="nav" aria-label="Primary navigation">
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+        <a routerLink="/list" routerLinkActive="active">List</a>
+        <a routerLink="/create" routerLinkActive="active">Create/Edit</a>
+        <a class="external" href="https://angular.dev" target="_blank" rel="noopener noreferrer">
+          Angular Docs ↗
+        </a>
+      </nav>
+    </div>
+  </header>
 
-<!-- Routed pages render here -->
-<router-outlet></router-outlet>
+  <main id="main-content" class="app-main">
+    <div class="container">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+
+  <footer class="app-footer">
+    <div class="container">
+      <span>Angular 21 • Routing + Params + Guards + Reusable Components</span>
+    </div>
+  </footer>
+</div>
