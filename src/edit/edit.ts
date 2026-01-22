@@ -1,31 +1,63 @@
 import { Component, computed, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map } from 'rxjs/operators';
+
+import { ReactiveFormsModule, FormControl, FormGroup, Validators } from '@angular/forms';
+
 import { CardComponent } from '../components-shared/card/card';
 import { FormFieldComponent } from '../components-shared/form-field/form-field';
+
+type ItemForm = {
+  name: FormControl<string>;
+  category: FormControl<string>;
+};
 
 @Component({
   selector: 'app-edit',
   standalone: true,
-  imports: [RouterLink, CardComponent, FormFieldComponent],
+  imports: [RouterLink, ReactiveFormsModule, CardComponent, FormFieldComponent],
   templateUrl: './edit.html',
   styleUrls: ['./edit.css'],
 })
 export class EditComponent {
   private route = inject(ActivatedRoute);
 
-  id = computed(() => this.route.snapshot.paramMap.get('id'));
+  private idParam = toSignal(
+    this.route.paramMap.pipe(map((p) => p.get('id'))),
+    { initialValue: null },
+  );
+
+  id = computed(() => this.idParam());
   mode = computed(() => (this.id() ? 'Edit' : 'Create'));
 
-  name = '';
-  category = '';
+  // Reactive form + validators 
+  form = new FormGroup<ItemForm>({
+    name: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.minLength(2)],
+    }),
+    category: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
+  });
+
+  // Derived state (like your canSave, but based on form validity)
+  canSave = computed(() => this.form.valid);
 
   save() {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+
     console.log('SAVE (stub)', {
       mode: this.mode(),
       id: this.id(),
-      name: this.name,
-      category: this.category,
+      ...this.form.getRawValue(),
     });
+
     alert('Saved (stub). Check console for output.');
   }
 }

@@ -1,16 +1,20 @@
 import { Routes } from '@angular/router';
-
 import { HomeComponent } from '../home/home';
-import { ListComponent } from '../list/list';
-import { DetailComponent } from '../detail/detail';
-import { EditComponent } from '../edit/edit';
-import { authGuard } from '../guards/auth.guard';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'list', component: ListComponent },
-  { path: 'detail/:id', component: DetailComponent },
-  { path: 'create', component: EditComponent, canActivate: [authGuard] },
-  { path: 'edit/:id', component: EditComponent, canActivate: [authGuard] },
+
+  // Feature section: items (list + detail)
+  {
+    path: 'items',
+    loadChildren: () => import('./items/items.routes').then(m => m.ITEMS_ROUTES),
+  },
+
+  // Feature section: admin (create/edit guarded) — kept at root paths
+  {
+    path: '',
+    loadChildren: () => import('./admin/admin.routes').then(m => m.ADMIN_ROUTES),
+  },
+
   { path: '**', redirectTo: '' },
 ];

@@ -1,27 +1,39 @@
-<section class="page">
+<main class="page" role="main">
   <header class="page-header">
     <h1 class="page-title">{{ mode() }} Item</h1>
-    <p class="page-subtitle">Reusable form fields + save stub (check console).</p>
+    <p class="page-subtitle" id="edit-help">
+      Reusable form fields + save stub (check console).
+    </p>
   </header>
 
-  <app-card ariaLabel="Create or edit form">
-    <app-form-field
-      label="Name"
-      placeholder="Enter a name"
-      [value]="name"
-      (valueChange)="name = $event"
-    ></app-form-field>
+  <app-card ariaLabel="Create or edit item form">
+    <form
+      [formGroup]="form"
+      (ngSubmit)="save()"
+      aria-describedby="edit-help"
+      novalidate
+    >
+      <!-- Screen-reader-only heading -->
+      <h2 class="sr-only" id="edit-form-title">{{ mode() }} Item Form</h2>
 
-    <app-form-field
-      label="Category"
-      placeholder="Enter a category"
-      [value]="category"
-      (valueChange)="category = $event"
-    ></app-form-field>
+      <app-form-field
+        label="Name"
+        placeholder="Enter a name"
+        [control]="form.controls.name"
+      ></app-form-field>
 
-    <div class="actions" aria-label="Form actions">
-      <button class="btn primary" type="button" (click)="save()">Save</button>
-      <a class="btn ghost" routerLink="/list">Cancel</a>
-    </div>
+      <app-form-field
+        label="Category"
+        placeholder="Enter a category"
+        [control]="form.controls.category"
+      ></app-form-field>
+
+      <div class="actions" role="group" aria-label="Form actions">
+        <button class="btn primary" type="submit" [disabled]="form.invalid">
+          Save
+        </button>
+        <a class="btn ghost" routerLink="/items">Cancel</a>
+      </div>
+    </form>
   </app-card>
-</section>
+</main>

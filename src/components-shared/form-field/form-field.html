@@ -1,10 +1,32 @@
-<label class="field">
-  <span class="label">{{ label }}</span>
-  <input
-    class="input"
-    [type]="type"
-    [value]="value"
-    [placeholder]="placeholder"
-    (input)="onInput($event)"
-  />
-</label>
+<div class="field">
+  <label class="label" [for]="inputId">{{ label }}</label>
+
+  <!-- Reactive Forms path -->
+  @if (control) {
+    <input
+      class="input"
+      [id]="inputId"
+      [type]="type"
+      [placeholder]="placeholder"
+      [formControl]="control"
+      [attr.aria-invalid]="showError() ? 'true' : 'false'"
+      [attr.aria-describedby]="showError() ? errorId : null"
+    />
+  } @else {
+    <!-- Legacy path (signals/valueChange) -->
+    <input
+      class="input"
+      [id]="inputId"
+      [type]="type"
+      [placeholder]="placeholder"
+      [value]="value"
+      (input)="onInput($event)"
+    />
+  }
+
+  @if (showError()) {
+    <p class="error" [id]="errorId" role="alert">
+      {{ errorMessage() }}
+    </p>
+  }
+</div>
