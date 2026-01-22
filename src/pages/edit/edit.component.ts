@@ -5,8 +5,8 @@ import { map } from 'rxjs/operators';
 
 import { ReactiveFormsModule, FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { CardComponent } from '../components-shared/card/card';
-import { FormFieldComponent } from '../components-shared/form-field/form-field';
+import { CardComponent } from '../../components-shared/card/card.component';
+import { FormFieldComponent } from '../../components-shared/form-field/form-field.component';
 
 type ItemForm = {
   name: FormControl<string>;
@@ -18,12 +18,11 @@ type ItemForm = {
   standalone: true,
   imports: [RouterLink, ReactiveFormsModule, CardComponent, FormFieldComponent],
   templateUrl: './edit.html',
-  styleUrls: ['./edit.css'],
 })
-export class EditComponent {
-  private route = inject(ActivatedRoute);
+export class CreateEditComponent {
+  private readonly route = inject(ActivatedRoute);
 
-  private idParam = toSignal(
+  private readonly idParam = toSignal(
     this.route.paramMap.pipe(map((p) => p.get('id'))),
     { initialValue: null },
   );
