@@ -1,10 +1,13 @@
 import { Component, signal } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { CardComponent } from '../../components-shared/card/card.component';
+
+type Item = { id: number; name: string; category: string; updated: string };
 
 @Component({
   selector: 'app-home',
-  imports: [RouterOutlet, RouterLink, CommonModule],
+  imports: [RouterLink, CommonModule, CardComponent],
   templateUrl: './home.html',
   styleUrl: './home.css'
 })
@@ -13,9 +16,9 @@ export class HomeComponent {
   liveMessage = signal('Welcome to the home page');
   stats = signal({ total: 0, categories: 0, latest: 0 });
   query = signal('');
-  filtered = signal([]);
+  filtered = signal<Item[]>([]);
   showTips = signal(false);
-  recent = signal([]);
+  recent = signal<Item[]>([]);
 
   // Add required methods
   clearSearch() {

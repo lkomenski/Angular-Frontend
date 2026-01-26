@@ -1,7 +1,7 @@
 import { Component, computed, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { CardComponent } from '../components-shared/card/card';
-import { TableComponent } from '../components-shared/table/table';
+import { CardComponent } from '../../components-shared/card/card.component';
+import { TableComponent } from '../../components-shared/table/table.component';
 
 type Item = { id: number; name: string; category: string };
 
@@ -10,7 +10,6 @@ type Item = { id: number; name: string; category: string };
   standalone: true,
   imports: [RouterLink, CardComponent, TableComponent],
   templateUrl: './list.html',
-  styleUrls: ['./list.css'],
 })
 export class ListComponent {
   query = signal('');
