@@ -10,18 +10,19 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
   styleUrls: ['./form-field.css'],
 })
 export class FormFieldComponent {
+  // Display inputs
   @Input() label = '';
   @Input() placeholder = '';
   @Input() type: 'text' | 'email' | 'number' = 'text';
 
   // Reactive Forms support
-  @Input() control?: FormControl<string>;
+  @Input({ required: true }) control!: FormControl<string>;
 
-  // Legacy support (signals/valueChange)
+  // Optional legacy support for two-way binding
   @Input() value = '';
   @Output() valueChange = new EventEmitter<string>();
 
-  // Accessibility IDs for label + error association
+  // Accessibility IDs
   inputId = `ff-${Math.random().toString(36).slice(2)}`;
   errorId = `${this.inputId}-error`;
 
@@ -30,20 +31,18 @@ export class FormFieldComponent {
   }
 
   showError(): boolean {
-    return !!this.control && this.control.invalid && (this.control.touched || this.control.dirty);
+    return this.control.invalid && (this.control.touched || this.control.dirty);
   }
 
   errorMessage(): string {
-    const c = this.control;
-    if (!c?.errors) return '';
+    const e = this.control.errors;
+    if (!e) return '';
 
-    if (c.errors['required']) return 'This field is required.';
-    if (c.errors['minlength']) {
-      return `Must be at least ${c.errors['minlength'].requiredLength} characters.`;
-    }
-    if (c.errors['email']) return 'Enter a valid email address.';
-
+    if (e['required']) return 'This field is required.';
+    if (e['minlength']) return `Must be at least ${e['minlength'].requiredLength} characters.`;
+    if (e['email']) return 'Enter a valid email address.';
+    if (e['eduNotAllowed']) return '.edu emails are not allowed.';
+    if (e['emailTaken']) return 'That email is already taken.';
     return 'Invalid value.';
   }
-
 }

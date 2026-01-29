@@ -9,6 +9,14 @@ This project is a basic Angular application created to demonstrate core Angular 
 - Internal navigation is implemented using `routerLink`.
 - An external site link (Angular Docs) is included using a standard anchor tag.
 
+### Reactive Forms
+- Implements a model-driven form using Angular Reactive Forms.
+- A reusable form field component renders individual inputs and validation messages.
+- A data collection form component owns the `FormGroup`, validation rules, and submit logic.
+- Includes built-in, custom, and asynchronous validation.
+- Demonstrates dynamic form sections using `FormArray`.
+- On submit, the form validates input and logs the collected data.
+
 ### Core Pages
 The application includes the following stub pages, all connected through the Angular Router:
 - **Home** – landing page with navigation links
@@ -36,7 +44,8 @@ The application includes the following stub pages, all connected through the Ang
 Reusable components are implemented using Angular’s component architecture and used across multiple pages:
 - **Card** – layout wrapper for page content
 - **Table** – displays tabular data on the List page
-- **Form Field** – reusable labeled input used on the Create/Edit page
+- **Form Field** – reusable labeled input component for Reactive Forms
+- **Data Collection Form** – Reactive Form component with validation and dynamic fields
 
 ### Architecture
 - Uses Angular 21’s standalone component architecture.

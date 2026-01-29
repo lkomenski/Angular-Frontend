@@ -2,12 +2,12 @@ import { Component, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { CardComponent } from '../../components-shared/card/card.component';
-
+import { DataCollectionFormComponent } from '../../components-shared/data-collection-form/data-collection-form.component';
 type Item = { id: number; name: string; category: string; updated: string };
 
 @Component({
   selector: 'app-home',
-  imports: [RouterLink, CommonModule, CardComponent],
+  imports: [RouterLink, CommonModule, CardComponent, DataCollectionFormComponent],
   templateUrl: './home.html',
   styleUrl: './home.css'
 })

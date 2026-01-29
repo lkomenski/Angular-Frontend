@@ -1,4 +1,5 @@
-<div class="page" role="presentation">
+<!-- Home page with semantic structure for accessibility and SEO -->
+<main class="page">
   <!-- Decorative background (hidden from assistive tech) -->
   <div class="bg" aria-hidden="true">
     <div class="blob b1"></div>
@@ -8,13 +9,13 @@
   </div>
 
   <!-- Screen-reader announcements -->
-  <p class="sr-only" aria-live="polite" aria-atomic="true">
+  <div class="sr-only" aria-live="polite" aria-atomic="true">
     {{ liveMessage() }}
-  </p>
+  </div>
 
-  <header class="hero" aria-label="Home dashboard">
+  <header class="hero">
     <div class="hero-left">
-      <p class="badge" aria-label="Project badge">Angular 21 • Signals • A11y</p>
+      <div class="badge">Angular 21 • Signals • A11y</div>
 
       <h1 class="title">
         A modern <span class="title-accent">routing demo</span> with polish.
@@ -25,31 +26,43 @@
         navigation — while still staying lightweight.
       </p>
 
-      <nav class="cta" aria-label="Quick actions">
-        <a class="btn primary" routerLink="/list">Explore List</a>
-        <a class="btn" routerLink="/create">Create Item</a>
-        <a class="btn ghost" routerLink="/detail/1">Open Detail #1</a>
+      <nav class="cta" aria-label="Quick navigation">
+        <a class="btn primary" routerLink="/list" aria-describedby="explore-desc">
+          Explore List
+          <span id="explore-desc" class="sr-only">View all items in the application</span>
+        </a>
+        <a class="btn" routerLink="/create" aria-describedby="create-desc">
+          Create Item
+          <span id="create-desc" class="sr-only">Add a new item to the collection</span>
+        </a>
+        <a class="btn ghost" routerLink="/detail/1" aria-describedby="detail-desc">
+          Open Detail #1
+          <span id="detail-desc" class="sr-only">View details for sample item</span>
+        </a>
       </nav>
 
-      <section class="stats" aria-label="Summary stats">
-        <article class="stat" aria-label="Total items">
-          <p class="stat-num">{{ stats().total }}</p>
-          <p class="stat-label">Items</p>
-        </article>
+      <section class="stats" aria-labelledby="stats-heading">
+        <h2 id="stats-heading" class="sr-only">Summary Statistics</h2>
+        
+        <div class="stat">
+          <div class="stat-num" aria-describedby="items-label">{{ stats().total }}</div>
+          <div id="items-label" class="stat-label">Items</div>
+        </div>
 
-        <article class="stat" aria-label="Total categories">
-          <p class="stat-num">{{ stats().categories }}</p>
-          <p class="stat-label">Categories</p>
-        </article>
+        <div class="stat">
+          <div class="stat-num" aria-describedby="categories-label">{{ stats().categories }}</div>
+          <div id="categories-label" class="stat-label">Categories</div>
+        </div>
 
-        <article class="stat" aria-label="Latest update">
-          <p class="stat-num">{{ stats().latest }}</p>
-          <p class="stat-label">Latest Update</p>
-        </article>
+        <div class="stat">
+          <div class="stat-num" aria-describedby="latest-label">{{ stats().latest }}</div>
+          <div id="latest-label" class="stat-label">Latest Update</div>
+        </div>
       </section>
     </div>
 
-    <aside class="hero-right" aria-label="Search and tips">
+    <aside class="hero-right" aria-labelledby="sidebar-heading">
+      <h2 id="sidebar-heading" class="sr-only">Search and Demo Guide</h2>
       <!-- Search panel -->
       <app-card ariaLabel="Search panel">
         <section aria-labelledby="search-title">
@@ -89,12 +102,12 @@
 
           <section class="list" aria-label="Search results">
             @if (filtered().length === 0) {
-              <div class="empty" role="status">
+              <output class="empty">
                 <p class="empty-title">No matches</p>
                 <p class="empty-sub">Try a different keyword.</p>
-              </div>
+              </output>
             } @else {
-              <ul class="result-list" role="list">
+              <ul class="result-list">
                 @for (it of filtered(); track it.id) {
                   <li>
                     <a
@@ -103,10 +116,15 @@
                       [attr.aria-label]="'View details for ' + it.name"
                     >
                       <div class="row-left">
-                        <span class="pill" aria-label="Item id">#{{ it.id }}</span>
+                        <span class="pill">
+                          <span class="sr-only">Item ID </span>#{{ it.id }}
+                        </span>
                         <span class="row-text">
                           <span class="row-name">{{ it.name }}</span>
-                          <span class="row-meta">{{ it.category }} • {{ it.updated }}</span>
+                          <span class="row-meta">
+                            <span class="sr-only">Category: </span>{{ it.category }} • 
+                            <span class="sr-only">Last updated: </span>{{ it.updated }}
+                          </span>
                         </span>
                       </div>
                       <span class="row-right" aria-hidden="true">View →</span>
@@ -161,7 +179,19 @@
     </aside>
   </header>
 
-  <main class="lower" aria-label="Recent items">
+  <section class="lower" aria-labelledby="content-heading">
+    <h2 id="content-heading" class="sr-only">Dashboard Content</h2>
+    
+    <app-card ariaLabel="Data collection form panel">
+      <section aria-labelledby="collect-title" class="wide">
+    <header>
+      <h2 id="collect-title" class="panel-title">Data Collection</h2>
+      <p class="panel-sub">Reactive Forms + validation + dynamic fields.</p>
+    </header>
+
+        <app-data-collection-form></app-data-collection-form>
+      </section>
+    </app-card>
     <app-card ariaLabel="Recent items panel">
       <section aria-labelledby="recent-title" class="wide">
         <header>
@@ -171,23 +201,31 @@
 
         <div class="recent">
           @for (it of recent(); track it.id) {
-            <article class="recent-card" aria-label="Recent item">
+            <article class="recent-card">
               <header class="recent-top">
-                <span class="pill alt">#{{ it.id }}</span>
-                <span class="tag">{{ it.category }}</span>
+                <span class="pill alt">
+                  <span class="sr-only">Item ID </span>#{{ it.id }}
+                </span>
+                <span class="tag">
+                  <span class="sr-only">Category: </span>{{ it.category }}
+                </span>
               </header>
 
               <h3 class="recent-name">{{ it.name }}</h3>
-              <p class="recent-meta">Updated: {{ it.updated }}</p>
-
-              <p class="recent-actions">
-                <a class="mini" [routerLink]="['/detail', it.id]">View</a>
-                <a class="mini" [routerLink]="['/edit', it.id]">Edit</a>
+              <p class="recent-meta">
+                <span class="sr-only">Last </span>Updated: {{ it.updated }}
               </p>
+
+              <nav class="recent-actions" aria-label="Actions for {{ it.name }}">
+                <a class="mini" [routerLink]="['/detail', it.id]" 
+                   [attr.aria-label]="'View details for ' + it.name">View</a>
+                <a class="mini" [routerLink]="['/edit', it.id]" 
+                   [attr.aria-label]="'Edit ' + it.name">Edit</a>
+              </nav>
             </article>
           }
         </div>
       </section>
     </app-card>
-  </main>
-</div>
+  </section>
+</main>

@@ -1,32 +1,14 @@
-<div class="field">
-  <label class="label" [for]="inputId">{{ label }}</label>
+<label [for]="inputId">{{ label }}</label>
 
-  <!-- Reactive Forms path -->
-  @if (control) {
-    <input
-      class="input"
-      [id]="inputId"
-      [type]="type"
-      [placeholder]="placeholder"
-      [formControl]="control"
-      [attr.aria-invalid]="showError() ? 'true' : 'false'"
-      [attr.aria-describedby]="showError() ? errorId : null"
-    />
-  } @else {
-    <!-- Legacy path (signals/valueChange) -->
-    <input
-      class="input"
-      [id]="inputId"
-      [type]="type"
-      [placeholder]="placeholder"
-      [value]="value"
-      (input)="onInput($event)"
-    />
-  }
+<input
+  [id]="inputId"
+  [type]="type"
+  [placeholder]="placeholder"
+  [formControl]="control"
+  [attr.aria-invalid]="showError()"
+  [attr.aria-describedby]="showError() ? errorId : null"
+/>
 
-  @if (showError()) {
-    <p class="error" [id]="errorId" role="alert">
-      {{ errorMessage() }}
-    </p>
-  }
-</div>
+<p *ngIf="showError()" class="error" [id]="errorId">
+  {{ errorMessage() }}
+</p>

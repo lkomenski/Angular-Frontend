@@ -1,0 +1,44 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <app-form-field
+    label="First Name"
+    placeholder="First name"
+    type="text"
+    [control]="form.controls.firstName"
+  ></app-form-field>
+
+  <app-form-field
+    label="Last Name"
+    placeholder="Last name"
+    type="text"
+    [control]="form.controls.lastName"
+  ></app-form-field>
+
+  <app-form-field
+    label="Email"
+    placeholder="you@example.com"
+    type="email"
+    [control]="form.controls.email"
+  ></app-form-field>
+
+  <section style="margin-top: 12px;" formArrayName="aliases" aria-label="Aliases section">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <h3 style="margin:0;">Aliases</h3>
+      <button type="button" class="btn" (click)="addAlias()">+ Add</button>
+    </div>
+
+    <div *ngFor="let ctrl of aliases.controls; let i = index" style="margin-top: 8px;">
+      <app-form-field
+        [label]="'Alias ' + (i + 1)"
+        placeholder="Enter alias"
+        type="text"
+        [control]="ctrl"
+      ></app-form-field>
+
+      <button type="button" class="btn ghost" (click)="removeAlias(i)">Remove</button>
+    </div>
+  </section>
+
+  <button type="submit" class="btn primary" [disabled]="form.pending">
+    Submit
+  </button>
+</form>
