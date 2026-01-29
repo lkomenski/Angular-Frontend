@@ -1,24 +1,23 @@
 <main class="page" role="main">
   <header class="page-header">
-    <h1 class="page-title">List</h1>
+    <h1 class="page-title">My Courses</h1>
     <p class="page-subtitle" id="list-instructions">
-      Click a row to open Detail (route parameter).
+      View and manage all your courses. Click a row to see course details.
     </p>
   </header>
 
-  <app-card ariaLabel="Items list">
+  <app-card ariaLabel="Courses list">
     <app-table
-      aria-label="Items table"
+      aria-label="Courses table"
       aria-describedby="list-instructions"
       [columns]="columns"
       [rows]="filteredRows()"
       (rowClick)="openDetail($event)"
     ></app-table>
-    <!-- questionable syntax highlighting -->
   </app-card>
 
-  <div class="actions" role="group" aria-label="List actions">
-    <a class="btn ghost" routerLink="/">Back Home</a>
-    <a class="btn primary" routerLink="/create">Create Item</a>
-  </div>
+  <nav class="actions" role="group" aria-label="Course actions">
+    <a class="btn ghost" routerLink="/">Back to Dashboard</a>
+    <a class="btn primary" routerLink="/create">Add New Course</a>
+  </nav>
 </main>

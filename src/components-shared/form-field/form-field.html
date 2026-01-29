@@ -1,14 +1,17 @@
-<label [for]="inputId">{{ label }}</label>
+<div class="field">
+  <label [for]="inputId" class="label">{{ label }}</label>
 
-<input
-  [id]="inputId"
-  [type]="type"
-  [placeholder]="placeholder"
-  [formControl]="control"
-  [attr.aria-invalid]="showError()"
-  [attr.aria-describedby]="showError() ? errorId : null"
-/>
+  <input
+    class="input"
+    [id]="inputId"
+    [type]="type"
+    [placeholder]="placeholder"
+    [formControl]="control"
+    [attr.aria-invalid]="showError()"
+    [attr.aria-describedby]="showError() ? errorId : null"
+  />
 
-<p *ngIf="showError()" class="error" [id]="errorId">
-  {{ errorMessage() }}
-</p>
+  <p *ngIf="showError()" class="error" [id]="errorId">
+    {{ errorMessage() }}
+  </p>
+</div>

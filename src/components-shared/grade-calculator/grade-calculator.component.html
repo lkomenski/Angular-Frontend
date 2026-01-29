@@ -1,0 +1,126 @@
+<section class="grade-calc-container" aria-labelledby="calc-heading">
+  <h2 id="calc-heading" class="calc-title">Grade Calculator</h2>
+  <p class="calc-subtitle">Project your final grade with hypothetical scores</p>
+
+  <!-- Course Selection -->
+  <section class="calc-section">
+    <label class="calc-label" for="course-select">Select Course:</label>
+    <select 
+      id="course-select"
+      class="calc-select"
+      [value]="selectedCourseId() || ''"
+      (change)="selectCourse($any($event.target).value ? +$any($event.target).value : null)">
+      <option value="">-- Choose a course --</option>
+      @for (course of courses(); track course.id) {
+        <option [value]="course.id">{{ course.code }} - {{ course.name }}</option>
+      }
+    </select>
+  </section>
+
+  @if (selectedCourse()) {
+    <!-- Current Grade Display -->
+    <app-card>
+      <article class="current-grade">
+        <section class="grade-display">
+          <p class="grade-label">Current Grade</p>
+          <p class="grade-value" [class]="getGradeClass(currentGrade())">
+            {{ currentGrade() !== null ? (currentGrade()!.toFixed(2) + '%') : 'N/A' }}
+          </p>
+          <p class="grade-letter">{{ getLetterGrade(currentGrade()) }}</p>
+        </section>
+        <section class="grade-display">
+          <p class="grade-label">Target Grade</p>
+          <p class="grade-value target">{{ selectedCourse()!.targetGrade }}%</p>
+          <p class="grade-letter">{{ getLetterGrade(selectedCourse()!.targetGrade) }}</p>
+        </section>
+      </article>
+    </app-card>
+
+    <!-- Assignments with Hypothetical Scores -->
+    <app-card>
+      <h3 class="section-title">Enter Hypothetical Scores</h3>
+      <p class="section-subtitle">Adjust scores to see how they affect your final grade</p>
+
+      <section class="assignments-table" role="table" aria-label="Hypothetical assignment scores">
+        <header class="table-header" role="row">
+          <div class="col-name">Assignment</div>
+          <div class="col-category">Category</div>
+          <div class="col-weight">Weight</div>
+          <span class="col-score">Score</span>
+          <span class="col-max">Max</span>
+        </header>
+
+        @for (assignment of whatIfAssignments(); track assignment.id) {
+          <article class="table-row" role="row">
+            <div class="col-name">{{ assignment.name }}</div>
+            <div class="col-category">
+              <span class="category-badge">{{ assignment.category }}</span>
+            </div>
+            <div class="col-weight">{{ assignment.weight }}%</div>
+            <div class="col-score">
+              <input 
+                type="number"
+                class="score-input"
+                [value]="assignment.hypotheticalScore"
+                [max]="assignment.pointsPossible"
+                min="0"
+                step="0.5"
+                (input)="updateHypotheticalScore(assignment.id, $any($event.target).value)"
+                placeholder="--"
+              />
+            </div>
+            <div class="col-max">{{ assignment.pointsPossible }}</div>
+          </article>
+        }
+      </section>
+    </app-card>
+
+    <!-- Projected Grade Display -->
+    <app-card>
+      <article class="projected-grade">
+        <h3 class="section-title">Projected Final Grade</h3>
+        <section class="projection-display">
+          <p class="projection-value" [class]="getGradeClass(projectedGrade())">
+            {{ projectedGrade().toFixed(2) }}%
+          </p>
+          <p class="projection-letter">{{ getLetterGrade(projectedGrade()) }}</p>
+        </section>
+
+        <section class="grade-comparison">
+          <article class="comparison-item">
+            <span class="comparison-label">Difference from Current:</span>
+            <span 
+              class="comparison-value"
+              [class.positive]="gradeDifference() > 0"
+              [class.negative]="gradeDifference() < 0">
+              {{ gradeDifference() > 0 ? '+' : '' }}{{ gradeDifference().toFixed(2) }}%
+            </span>
+          </article>
+          <article class="comparison-item">
+            <span class="comparison-label">Difference from Target:</span>
+            <span 
+              class="comparison-value"
+              [class.positive]="targetDifference() >= 0"
+              [class.negative]="targetDifference() < 0">
+              {{ targetDifference() > 0 ? '+' : '' }}{{ targetDifference().toFixed(2) }}%
+            </span>
+          </article>
+        </section>
+
+        @if (targetDifference() >= 0) {
+          <aside class="success-message">
+            ✅ You're on track to meet your target grade!
+          </aside>
+        } @else {
+          <aside class="warning-message">
+            ⚠️ You need {{ Math.abs(targetDifference()).toFixed(2) }}% more to reach your target
+          </aside>
+        }
+
+        <button class="reset-btn" (click)="resetScores()">
+          Reset to Actual Scores
+        </button>
+      </article>
+    </app-card>
+  }
+</section>

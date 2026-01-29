@@ -1,0 +1,109 @@
+<section class="progress-tracker" aria-labelledby="tracker-heading">
+  <h2 id="tracker-heading" class="tracker-title">Progress Tracker</h2>
+  <p class="tracker-subtitle">Track your academic progress across all courses</p>
+
+  <!-- Overall Stats -->
+  <section class="overall-stats" aria-label="Overall statistics" role="group">
+    <article class="stat-card">
+      <p class="stat-icon" aria-hidden="true">📚</p>
+      <p class="stat-value">{{ activeSemester().name || 'N/A' }}</p>
+      <p class="stat-label">Current Semester</p>
+    </article>
+
+    <article class="stat-card">
+      <p class="stat-icon" aria-hidden="true">🎯</p>
+      <p class="stat-value">{{ activeCourseCount() }}</p>
+      <p class="stat-label">Active Courses</p>
+    </article>
+
+    <article class="stat-card">
+      <p class="stat-icon" aria-hidden="true">📈</p>
+      <p class="stat-value" [class]="getGPAClass(semesterGPA())">
+        {{ semesterGPA().toFixed(2) }}
+      </p>
+      <p class="stat-label">Semester GPA</p>
+    </article>
+
+    <article class="stat-card">
+      <p class="stat-icon" aria-hidden="true">✅</p>
+      <p class="stat-value">{{ completionRate().toFixed(0) }}%</p>
+      <p class="stat-label">Completion Rate</p>
+    </article>
+  </section>
+
+  <!-- Course Progress Bars -->
+  <section class="course-progress-section" aria-labelledby="course-progress-heading">
+    <h3 id="course-progress-heading" class="section-title">Course Progress</h3>
+    
+    @for (course of coursesWithProgress(); track course.id) {
+      <article class="progress-item" [attr.aria-label]="course.code + ' progress'">
+        <header class="progress-header">
+          <section class="course-info">
+            <span class="course-badge" [style.background-color]="course.color">
+              {{ course.code }}
+            </span>
+            <span class="course-name">{{ course.name }}</span>
+          </section>
+          <section class="progress-stats">
+            <span class="grade" [class]="getGradeClass(course.currentGrade)">
+              {{ course.currentGrade !== null ? course.currentGrade.toFixed(1) + '%' : 'N/A' }}
+            </span>
+            <span class="completion">
+              {{ course.completedAssignments }}/{{ course.totalAssignments }} complete
+            </span>
+          </section>
+        </header>
+
+        <div class="progress-bar-container">
+          <div 
+            class="progress-bar" 
+            [style.width.%]="course.completionPercentage"
+            [class]="getProgressBarClass(course.completionPercentage)">
+          </div>
+        </div>
+
+        <section class="progress-details" aria-label="Detailed progress metrics">
+          <article class="detail">
+            <span class="detail-label">Graded:</span>
+            <span class="detail-value">{{ course.gradedCount }}</span>
+          </article>
+          <article class="detail">
+            <span class="detail-label">Pending:</span>
+            <span class="detail-value">{{ course.pendingCount }}</span>
+          </article>
+          <article class="detail">
+            <span class="detail-label">Target:</span>
+            <span class="detail-value">{{ course.targetGrade }}%</span>
+          </article>
+        </section>
+      </article>
+    }
+  </section>
+
+  <!-- Semester Timeline -->
+  <section class="timeline-section" aria-labelledby="timeline-heading">
+    <h3 id="timeline-heading" class="section-title">Semester Timeline</h3>
+    
+    @for (semester of semesters(); track semester.id) {
+      <article class="timeline-item" [class.active]="semester.isCurrent">
+        <div class="timeline-marker" aria-hidden="true"></div>
+        <section class="timeline-content">
+          <header class="timeline-header">
+            <h4 class="timeline-title">{{ semester.name }}</h4>
+            @if (semester.isCurrent) {
+              <span class="current-badge">Current</span>
+            }
+          </header>
+          <p class="timeline-stats">
+            <span>{{ semester.courseCount }} courses</span>
+            <span>GPA: {{ semester.gpa.toFixed(2) }}</span>
+            <span>{{ semester.totalCredits }} credits</span>
+          </p>
+          <p class="timeline-date">
+            {{ formatDate(semester.startDate) }} - {{ formatDate(semester.endDate) }}
+          </p>
+        </section>
+      </article>
+    }
+  </section>
+</section>

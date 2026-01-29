@@ -1,0 +1,17 @@
+<div class="semester-selector">
+  <label class="sr-only" for="semester-select">Select semester</label>
+  <select 
+    id="semester-select"
+    class="semester-select"
+    [value]="activeSemester().id || ''"
+    (change)="onSemesterChange($any($event.target).value)">
+    @for (semester of semesters(); track semester.id) {
+      <option [value]="semester.id">
+        {{ semester.name }}
+        @if (semester.isCurrent) {
+          (Current)
+        }
+      </option>
+    }
+  </select>
+</div>

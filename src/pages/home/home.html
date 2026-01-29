@@ -1,76 +1,89 @@
 <!-- Home page with semantic structure for accessibility and SEO -->
-<main class="page">
+<main class="page-fullwidth">
   <!-- Decorative background (hidden from assistive tech) -->
-  <div class="bg" aria-hidden="true">
+  <aside class="bg" aria-hidden="true">
     <div class="blob b1"></div>
     <div class="blob b2"></div>
     <div class="blob b3"></div>
     <div class="grid"></div>
-  </div>
+  </aside>
 
   <!-- Screen-reader announcements -->
-  <div class="sr-only" aria-live="polite" aria-atomic="true">
+  <section class="sr-only" aria-live="polite" aria-atomic="true">
     {{ liveMessage() }}
-  </div>
+  </section>
 
-  <header class="hero">
-    <div class="hero-left">
-      <div class="badge">Angular 21 • Signals • A11y</div>
+  <section class="page-container">
+    <header class="hero">
+      <section class="hero-content">
+        <p class="badge">Angular 21 • Signals • Reactive Forms</p>
 
-      <h1 class="title">
-        A modern <span class="title-accent">routing demo</span> with polish.
-      </h1>
+        <h1 class="title">
+          <span class="title-accent">Course Manager</span> for Students
+        </h1>
 
-      <p class="subtitle">
-        This home page demonstrates state with <strong>signals</strong>, semantic layout, and accessible
-        navigation — while still staying lightweight.
-      </p>
+        <p class="subtitle">
+          Organize your courses, track assignments, and manage resources all in one place.
+          Built with <strong>Angular Signals</strong> and modern best practices.
+        </p>
 
-      <nav class="cta" aria-label="Quick navigation">
-        <a class="btn primary" routerLink="/list" aria-describedby="explore-desc">
-          Explore List
-          <span id="explore-desc" class="sr-only">View all items in the application</span>
-        </a>
-        <a class="btn" routerLink="/create" aria-describedby="create-desc">
-          Create Item
-          <span id="create-desc" class="sr-only">Add a new item to the collection</span>
-        </a>
-        <a class="btn ghost" routerLink="/detail/1" aria-describedby="detail-desc">
-          Open Detail #1
-          <span id="detail-desc" class="sr-only">View details for sample item</span>
-        </a>
-      </nav>
+        <nav class="cta" aria-label="Quick navigation">
+          <a class="btn primary" routerLink="/list" aria-describedby="explore-desc">
+            View All Courses
+            <span id="explore-desc" class="sr-only">View all courses in the application</span>
+          </a>
+          <a class="btn" routerLink="/create" aria-describedby="create-desc">
+            Add Course
+            <span id="create-desc" class="sr-only">Add a new course to your collection</span>
+          </a>
+        </nav>
 
-      <section class="stats" aria-labelledby="stats-heading">
-        <h2 id="stats-heading" class="sr-only">Summary Statistics</h2>
-        
-        <div class="stat">
-          <div class="stat-num" aria-describedby="items-label">{{ stats().total }}</div>
-          <div id="items-label" class="stat-label">Items</div>
-        </div>
+        <section class="stats" aria-labelledby="stats-heading">
+          <h2 id="stats-heading" class="sr-only">Summary Statistics</h2>
+          
+          <article class="stat">
+            <p class="stat-num" aria-describedby="items-label">{{ stats().total }}</p>
+            <p id="items-label" class="stat-label">Courses</p>
+          </article>
 
-        <div class="stat">
-          <div class="stat-num" aria-describedby="categories-label">{{ stats().categories }}</div>
-          <div id="categories-label" class="stat-label">Categories</div>
-        </div>
+          <article class="stat">
+            <p class="stat-num" aria-describedby="categories-label">{{ stats().categories }}</p>
+            <p id="categories-label" class="stat-label">Semesters</p>
+          </article>
 
-        <div class="stat">
-          <div class="stat-num" aria-describedby="latest-label">{{ stats().latest }}</div>
-          <div id="latest-label" class="stat-label">Latest Update</div>
-        </div>
+          <article class="stat">
+            <p class="stat-num" aria-describedby="latest-label">{{ stats().latest }}</p>
+            <p id="latest-label" class="stat-label">This Week</p>
+          </article>
+        </section>
       </section>
-    </div>
+    </header>
 
-    <aside class="hero-right" aria-labelledby="sidebar-heading">
-      <h2 id="sidebar-heading" class="sr-only">Search and Demo Guide</h2>
+    <section class="main-layout">
+      <section class="main-content">
+        <!-- Add Course Form -->
+        <app-card ariaLabel="Add course form panel">
+          <section aria-labelledby="form-title">
+            <header>
+              <h2 id="form-title" class="panel-title">Add New Course</h2>
+              <p class="panel-sub">Create a course with resources and materials.</p>
+            </header>
+            <app-data-collection-form></app-data-collection-form>
+          </section>
+        </app-card>
+      </section>
+
+      <aside class="sidebar" aria-labelledby="sidebar-heading">
+        <h2 id="sidebar-heading" class="sr-only">Quick Tools and Recent Activity</h2>
+      
       <!-- Search panel -->
       <app-card ariaLabel="Search panel">
         <section aria-labelledby="search-title">
           <header class="panel-header">
-            <div>
-              <h2 id="search-title" class="panel-title">Search Items</h2>
-              <p class="panel-sub">Filter by name, category, or ID.</p>
-            </div>
+            <section>
+              <h2 id="search-title" class="panel-title">Search Courses</h2>
+              <p class="panel-sub">Filter by name or code.</p>
+            </section>
 
             <button
               class="icon-btn"
@@ -82,16 +95,16 @@
             </button>
           </header>
 
-          <form class="search" role="search" aria-label="Search items">
-            <label class="sr-only" for="item-search">Search items</label>
+          <form class="search" role="search" aria-label="Search courses">
+            <label class="sr-only" for="course-search">Search courses</label>
             <input
-              id="item-search"
+              id="course-search"
               class="search-input"
               type="text"
               [value]="query()"
               (input)="setQuery($any($event.target).value)"
               (keydown)="onSearchKeydown($event)"
-              placeholder="Try: demo, modern, 3…"
+              placeholder="Try: CS, Math, Biology…"
               autocomplete="off"
               aria-describedby="search-help"
             />
@@ -101,32 +114,30 @@
           </form>
 
           <section class="list" aria-label="Search results">
-            @if (filtered().length === 0) {
+            @if (query() && filtered().length === 0) {
               <output class="empty">
                 <p class="empty-title">No matches</p>
                 <p class="empty-sub">Try a different keyword.</p>
               </output>
-            } @else {
+            } @else if (filtered().length > 0) {
               <ul class="result-list">
-                @for (it of filtered(); track it.id) {
+                @for (course of filtered(); track course.id) {
                   <li>
                     <a
                       class="row"
-                      [routerLink]="['/detail', it.id]"
-                      [attr.aria-label]="'View details for ' + it.name"
+                      [routerLink]="['/detail', course.id]"
+                      [attr.aria-label]="'View details for ' + course.name"
                     >
-                      <div class="row-left">
-                        <span class="pill">
-                          <span class="sr-only">Item ID </span>#{{ it.id }}
-                        </span>
+                      <section class="row-left">
+                        <span class="pill">{{ course.code }}</span>
                         <span class="row-text">
-                          <span class="row-name">{{ it.name }}</span>
+                          <span class="row-name">{{ course.name }}</span>
                           <span class="row-meta">
-                            <span class="sr-only">Category: </span>{{ it.category }} • 
-                            <span class="sr-only">Last updated: </span>{{ it.updated }}
+                            <span class="sr-only">Instructor: </span>{{ course.instructor }} • 
+                            <span class="sr-only">Semester: </span>{{ course.semester }}
                           </span>
                         </span>
-                      </div>
+                      </section>
                       <span class="row-right" aria-hidden="true">View →</span>
                     </a>
                   </li>
@@ -137,14 +148,47 @@
         </section>
       </app-card>
 
+      <!-- Recent Courses -->
+      <app-card ariaLabel="Recent courses panel">
+        <section aria-labelledby="recent-title">
+          <header>
+            <h2 id="recent-title" class="panel-title">Recent Courses</h2>
+            <p class="panel-sub">Your recently updated courses.</p>
+          </header>
+
+          <section class="recent-sidebar">
+            @for (course of recent(); track course.id) {
+              <article class="recent-item">
+                <header class="recent-item-header">
+                  <span class="pill alt">{{ course.code }}</span>
+                  <span class="tag">{{ course.semester }}</span>
+                </header>
+
+                <h3 class="recent-item-name">{{ course.name }}</h3>
+                <p class="recent-item-meta">
+                  Instructor: {{ course.instructor }}
+                </p>
+
+                <nav class="recent-actions" aria-label="Actions for {{ course.name }}">
+                  <a class="mini" [routerLink]="['/detail', course.id]" 
+                     [attr.aria-label]="'View details for ' + course.name">View</a>
+                  <a class="mini" [routerLink]="['/edit', course.id]" 
+                     [attr.aria-label]="'Edit ' + course.name">Edit</a>
+                </nav>
+              </article>
+            }
+          </section>
+        </section>
+      </app-card>
+
       <!-- Tips panel -->
-      <app-card ariaLabel="Demo guide panel">
+      <app-card ariaLabel="Quick guide panel">
         <section aria-labelledby="tips-title">
           <header class="panel-header">
-            <div>
-              <h2 id="tips-title" class="panel-title">Demo Guide</h2>
-              <p class="panel-sub">Optional notes for your walkthrough.</p>
-            </div>
+            <section>
+              <h2 id="tips-title" class="panel-title">Quick Guide</h2>
+              <p class="panel-sub">App navigation tips.</p>
+            </section>
 
             <button
               class="link-btn"
@@ -157,75 +201,26 @@
             </button>
           </header>
 
-          <div id="tips-content">
+          <section id="tips-content">
             @if (showTips()) {
               <ul class="tip-list">
-                <li><strong>List:</strong> click a row to navigate using route parameters.</li>
-                <li><strong>Detail:</strong> reads <code>:id</code> from the URL.</li>
-                <li><strong>Create/Edit:</strong> route guard placeholder is applied.</li>
+                <li><strong>List:</strong> View all your courses in one organized list.</li>
+                <li><strong>Detail:</strong> See course materials, resources, and information.</li>
+                <li><strong>Add/Edit:</strong> Manage course details and resources with forms.</li>
               </ul>
 
-              <nav class="mini-actions" aria-label="Tip shortcuts">
-                <a class="mini" routerLink="/list">Go to List</a>
-                <a class="mini" routerLink="/create">Create</a>
+              <nav class="mini-actions" aria-label="Quick shortcuts">
+                <a class="mini" routerLink="/list">All Courses</a>
+                <a class="mini" routerLink="/create">Add Course</a>
                 <a class="mini" href="https://angular.dev" target="_blank" rel="noopener noreferrer">
-                  External Docs ↗
+                  Angular Docs ↗
                 </a>
               </nav>
             }
-          </div>
+          </section>
         </section>
       </app-card>
     </aside>
-  </header>
-
-  <section class="lower" aria-labelledby="content-heading">
-    <h2 id="content-heading" class="sr-only">Dashboard Content</h2>
-    
-    <app-card ariaLabel="Data collection form panel">
-      <section aria-labelledby="collect-title" class="wide">
-    <header>
-      <h2 id="collect-title" class="panel-title">Data Collection</h2>
-      <p class="panel-sub">Reactive Forms + validation + dynamic fields.</p>
-    </header>
-
-        <app-data-collection-form></app-data-collection-form>
-      </section>
-    </app-card>
-    <app-card ariaLabel="Recent items panel">
-      <section aria-labelledby="recent-title" class="wide">
-        <header>
-          <h2 id="recent-title" class="panel-title">Recent Items</h2>
-          <p class="panel-sub">Static data, but structured like a real dashboard.</p>
-        </header>
-
-        <div class="recent">
-          @for (it of recent(); track it.id) {
-            <article class="recent-card">
-              <header class="recent-top">
-                <span class="pill alt">
-                  <span class="sr-only">Item ID </span>#{{ it.id }}
-                </span>
-                <span class="tag">
-                  <span class="sr-only">Category: </span>{{ it.category }}
-                </span>
-              </header>
-
-              <h3 class="recent-name">{{ it.name }}</h3>
-              <p class="recent-meta">
-                <span class="sr-only">Last </span>Updated: {{ it.updated }}
-              </p>
-
-              <nav class="recent-actions" aria-label="Actions for {{ it.name }}">
-                <a class="mini" [routerLink]="['/detail', it.id]" 
-                   [attr.aria-label]="'View details for ' + it.name">View</a>
-                <a class="mini" [routerLink]="['/edit', it.id]" 
-                   [attr.aria-label]="'Edit ' + it.name">Edit</a>
-              </nav>
-            </article>
-          }
-        </div>
-      </section>
-    </app-card>
+  </section>
   </section>
 </main>

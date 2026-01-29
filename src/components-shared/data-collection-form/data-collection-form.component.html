@@ -1,44 +1,47 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <app-form-field
-    label="First Name"
-    placeholder="First name"
+    label="Course Name"
+    placeholder="Introduction to Computer Science"
     type="text"
-    [control]="form.controls.firstName"
-  ></app-form-field>
+    [control]="form.controls.name"
+  />
 
   <app-form-field
-    label="Last Name"
-    placeholder="Last name"
+    label="Course Code"
+    placeholder="CS 101"
     type="text"
-    [control]="form.controls.lastName"
-  ></app-form-field>
+    [control]="form.controls.code"
+  />
 
   <app-form-field
-    label="Email"
-    placeholder="you@example.com"
-    type="email"
-    [control]="form.controls.email"
-  ></app-form-field>
+    label="Instructor"
+    placeholder="Professor Name"
+    type="text"
+    [control]="form.controls.instructor"
+  />
 
-  <section style="margin-top: 12px;" formArrayName="aliases" aria-label="Aliases section">
-    <div style="display:flex; justify-content:space-between; align-items:center;">
-      <h3 style="margin:0;">Aliases</h3>
-      <button type="button" class="btn" (click)="addAlias()">+ Add</button>
-    </div>
+  <section class="resources-section" formArrayName="resources">
+    <header class="resources-header">
+      <h3>Course Resources</h3>
+      <button type="button" class="btn" (click)="addResource()">+ Add Resource</button>
+    </header>
 
-    <div *ngFor="let ctrl of aliases.controls; let i = index" style="margin-top: 8px;">
+    <div *ngFor="let ctrl of resources.controls; let i = index" class="resource-item">
       <app-form-field
-        [label]="'Alias ' + (i + 1)"
-        placeholder="Enter alias"
+        [label]="'Resource ' + (i + 1)"
+        placeholder="https://example.com/syllabus.pdf"
         type="text"
         [control]="ctrl"
-      ></app-form-field>
-
-      <button type="button" class="btn ghost" (click)="removeAlias(i)">Remove</button>
+      />
+      <button type="button" class="btn ghost" (click)="removeResource(i)">Remove</button>
     </div>
+
+    <p *ngIf="resources.length === 0" class="empty-message">
+      No resources added yet. Click "Add Resource" to include course materials, syllabi, or helpful links.
+    </p>
   </section>
 
-  <button type="submit" class="btn primary" [disabled]="form.pending">
-    Submit
+  <button type="submit" class="btn primary">
+    Save Course
   </button>
 </form>

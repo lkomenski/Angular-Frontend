@@ -1,0 +1,83 @@
+<section class="notifications-container" aria-labelledby="notif-heading">
+  <h2 id="notif-heading" class="notif-title">Notifications</h2>
+  <p class="notif-subtitle">Stay updated on upcoming assignments and deadlines</p>
+
+  @if (notifications().length === 0) {
+    <div class="empty-state">
+      <div class="empty-icon">🔔</div>
+      <p class="empty-text">No notifications at this time</p>
+      <p class="empty-subtext">You're all caught up!</p>
+    </div>
+  } @else {
+    <div class="notifications-list" role="list" aria-label="Notification items">
+      @for (notification of notifications(); track notification.id) {
+        <article class="notification-card" [class]="'priority-' + notification.priority" role="listitem">
+          <div class="notif-icon">
+            {{ getNotificationIcon(notification.type) }}
+          </div>
+          
+          <div class="notif-content">
+            <div class="notif-header">
+              <h3 class="notif-title-text">{{ notification.title }}</h3>
+              <span class="notif-time">{{ formatTime(notification.createdAt) }}</span>
+            </div>
+            
+            <p class="notif-message">{{ notification.message }}</p>
+            
+            @if (notification.actionLink) {
+              <a 
+                class="notif-action" 
+                [routerLink]="notification.actionLink"
+                [queryParams]="notification.actionParams || {}">
+                {{ notification.actionText || 'View Details' }} →
+              </a>
+            }
+          </div>
+
+          <button 
+            class="dismiss-btn"
+            (click)="dismissNotification(notification.id)"
+            aria-label="Dismiss notification">
+            ✕
+          </button>
+        </article>
+      }
+    </div>
+
+    <button class="clear-all-btn" (click)="clearAllNotifications()">
+      Clear All Notifications
+    </button>
+  }
+
+  <!-- Upcoming Assignments Summary -->
+  <section class="upcoming-summary" aria-labelledby="upcoming-heading">
+    <h3 id="upcoming-heading" class="summary-title">Upcoming This Week</h3>
+    
+    @if (upcomingAssignments().length === 0) {
+      <p class="summary-empty">No assignments due this week</p>
+    } @else {
+      <div class="assignments-grid">
+        @for (assignment of upcomingAssignments(); track assignment.id) {
+          <div class="assignment-summary">
+            <div class="assignment-due">
+              <div class="due-day">{{ getDayOfMonth(assignment.dueDate) }}</div>
+              <div class="due-month">{{ getMonth(assignment.dueDate) }}</div>
+            </div>
+            
+            <div class="assignment-info">
+              <div class="assignment-course">{{ assignment.courseName }}</div>
+              <div class="assignment-name">{{ assignment.name }}</div>
+              <div class="assignment-meta">
+                {{ assignment.pointsPossible }} pts • {{ assignment.category }}
+              </div>
+            </div>
+
+            <div class="assignment-status" [class]="'status-' + assignment.status">
+              {{ assignment.status }}
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </section>
+</section>

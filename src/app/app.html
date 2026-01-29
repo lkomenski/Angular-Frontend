@@ -4,21 +4,21 @@
   <header class="app-header">
     <div class="header-inner container">
       <div class="brand" aria-label="Application brand">
-        <div class="logo" aria-hidden="true">A</div>
+        <div class="logo" aria-hidden="true">CM</div>
         <div>
-          <div class="brand-title">Angular Frontend</div>
-          <div class="brand-subtitle">Modern routing + signals + a11y</div>
+          <div class="brand-title">Course Manager</div>
+          <div class="brand-subtitle">Organize • Track • Succeed</div>
         </div>
       </div>
 
+      <app-semester-selector></app-semester-selector>
+
       <nav class="nav" aria-label="Primary navigation">
-        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Dashboard</a>
+        <a routerLink="/list" routerLinkActive="active">My Courses</a>
+        <a routerLink="/assignments" routerLinkActive="active">Assignments</a>
+        <a routerLink="/create" routerLinkActive="active">Add Course</a>
         <a routerLink="/admin" routerLinkActive="active">Admin</a>
-        <a routerLink="/list" routerLinkActive="active">List</a>
-        <a routerLink="/create" routerLinkActive="active">Create/Edit</a>
-        <a class="external" href="https://angular.dev" target="_blank" rel="noopener noreferrer">
-          Angular Docs ↗
-        </a>
       </nav>
     </div>
   </header>
@@ -31,7 +31,7 @@
 
   <footer class="app-footer">
     <div class="container">
-      <span>Angular 21 • Routing + Params + Guards + Reusable Components</span>
+      <span>Course Manager • Built with Angular 21 + Signals + Reactive Forms</span>
     </div>
   </footer>
 </div>

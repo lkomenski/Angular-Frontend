@@ -1,14 +1,16 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { CardComponent } from '../../components-shared/card/card.component';
 import { DataCollectionFormComponent } from '../../components-shared/data-collection-form/data-collection-form.component';
+import { CourseDataService } from '../../services/course-data.service';
+import { Course } from '../../models/course.model';
 
-// Type definition for Item objects
+// Type definition for Item objects (for search compatibility)
 type Item = { id: number; name: string; category: string; updated: string };
 
 /**
- * Home component with Angular Signals and search functionality
+ * Home component with Angular Signals and course data integration
  */
 @Component({
   selector: 'app-home',
@@ -17,20 +19,32 @@ type Item = { id: number; name: string; category: string; updated: string };
   styleUrl: './home.css'
 })
 export class HomeComponent {
-  // Angular Signals for reactive state
-  liveMessage = signal('Welcome to the home page');
-  stats = signal({ total: 0, categories: 0, latest: 0 });
+  // Inject course data service
+  private courseData = inject(CourseDataService);
+
+  // Use service signals
+  liveMessage = signal('Welcome to Course Manager');
+  stats = this.courseData.stats;
+  recent = this.courseData.recentCourses;
+  
+  // Search functionality
   query = signal('');
-  filtered = signal<Item[]>([]);
+  filtered = signal<Course[]>([]);
+
   showTips = signal(false);
-  recent = signal<Item[]>([]);
 
   clearSearch() {
     this.query.set('');
+    this.filtered.set([]);
   }
 
   setQuery(value: string) {
     this.query.set(value);
+    if (value.trim()) {
+      this.filtered.set(this.courseData.searchCourses(value));
+    } else {
+      this.filtered.set([]);
+    }
   }
 
   onSearchKeydown(event: KeyboardEvent) {

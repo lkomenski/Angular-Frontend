@@ -1,16 +1,16 @@
 <section class="page">
   <header class="page-header">
-    <h1 class="page-title">Detail</h1>
-    <p class="page-subtitle">Showing item ID from the URL parameter.</p>
+    <h1 class="page-title">Course Details</h1>
+    <p class="page-subtitle">View course information, resources, and assignments.</p>
   </header>
 
-  <app-card ariaLabel="Detail page content">
-    <p><span class="pill">ID</span> <strong>{{ id() }}</strong></p>
-    <p class="muted">This is a stub detail view. Add fields here later if you want.</p>
+  <app-card ariaLabel="Course detail content">
+    <p><span class="pill">Course ID</span> <strong>{{ id() }}</strong></p>
+    <p class="muted">Detailed course view with resources, assignments, and materials will be displayed here.</p>
 
-    <div class="actions">
-      <a class="btn" routerLink="/list">Back to List</a>
-      <a class="btn primary" [routerLink]="['/edit', id()]">Edit this item</a>
-    </div>
+    <nav class="actions" aria-label="Detail page actions">
+      <a class="btn ghost" routerLink="/list">Back to My Courses</a>
+      <a class="btn primary" [routerLink]="['/edit', id()]">Edit Course</a>
+    </nav>
   </app-card>
 </section>

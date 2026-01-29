@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   AbstractControl,
@@ -9,85 +9,111 @@ import {
   ValidationErrors,
   Validators,
 } from '@angular/forms';
-import { timer } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { FormFieldComponent } from '../form-field/form-field.component';
+import { CourseDataService } from '../../services/course-data.service';
+import { Router } from '@angular/router';
 
 /**
- * Custom validator: prevents .edu email addresses
+ * Custom validator: ensures URL format for resources
  */
-function noSchoolEmail(control: AbstractControl): ValidationErrors | null {
-  const v = String(control.value ?? '');
-  return /\.edu\s*$/i.test(v) ? { eduNotAllowed: true } : null;
+function validUrl(control: AbstractControl): ValidationErrors | null {
+  if (!control.value) return null;
+  const urlPattern = /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)$/;
+  return urlPattern.test(control.value) ? null : { invalidUrl: true };
 }
 
 /**
- * Async validator: simulates email availability check
- */
-function emailAvailable() {
-  return (control: AbstractControl) =>
-    timer(300).pipe(
-      map(() => String(control.value ?? '').trim().toLowerCase()),
-      map((val) => (val === 'taken@example.com' ? { emailTaken: true } : null))
-    );
-}
-/**
- * Data collection form with Reactive Forms, custom validators, and FormArray
+ * Course form with Reactive Forms, custom validators, and FormArray for resources
  */
 @Component({
   selector: 'app-data-collection-form',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, FormFieldComponent],
   templateUrl: './data-collection-form.component.html',
+  styleUrls: ['./data-collection-form.component.css'],
 })
 export class DataCollectionFormComponent {
-  /** FormGroup with multiple FormControls and validators */
+  private courseData = inject(CourseDataService);
+  private router = inject(Router);
+
+  /** FormGroup for course information */
   form = new FormGroup({
-    firstName: new FormControl('', {
+    name: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.minLength(3)],
+    }),
+    code: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.pattern(/^[A-Z]{2,4}\s?\d{3,4}$/i)],
+    }),
+    instructor: new FormControl('', {
       nonNullable: true,
       validators: [Validators.required, Validators.minLength(2)],
     }),
-    lastName: new FormControl('', {
-      nonNullable: true,
-      validators: [Validators.required, Validators.minLength(2)],
-    }),
-    email: new FormControl('', {
-      nonNullable: true,
-      validators: [Validators.required, Validators.email, noSchoolEmail],
-      asyncValidators: [emailAvailable()],
-      updateOn: 'blur',
-    }),
-    /** Dynamic FormArray for repeated fields */
-    aliases: new FormArray<FormControl<string>>([]),
+    /** Dynamic FormArray for course resources */
+    resources: new FormArray<FormControl<string>>([]),
   });
 
   /** Getter for easier FormArray access */
-  get aliases() {
-    return this.form.controls.aliases;
+  get resources() {
+    return this.form.controls.resources;
   }
 
-  /** Add new alias field to FormArray */
-  addAlias() {
-    this.aliases.push(
+  /** Add new resource field to FormArray */
+  addResource() {
+    this.resources.push(
       new FormControl('', {
         nonNullable: true,
-        validators: [Validators.required, Validators.minLength(2)],
+        validators: [Validators.required, validUrl],
       })
     );
   }
 
-  /** Remove alias field at specified index */
-  removeAlias(i: number) {
-    this.aliases.removeAt(i);
+  /** Remove resource field at specified index */
+  removeResource(i: number) {
+    this.resources.removeAt(i);
   }
 
   /** Handle form submission with validation */
   onSubmit() {
     if (this.form.valid) {
-      console.log('Final form value:', this.form.getRawValue());
+      const formValue = this.form.getRawValue();
+      
+      // Get active semester from service
+      const activeSemester = this.courseData.activeSemester();
+      
+      // Create new course with form data
+      this.courseData.addCourse({
+        name: formValue.name,
+        code: formValue.code,
+        instructor: formValue.instructor,
+        semester: activeSemester?.name || 'Fall 2024',
+        credits: 3, // Default value
+        targetGrade: 90, // Default A- target
+        currentGrade: null,
+        color: this.getRandomColor(),
+        assignments: [],
+        resources: formValue.resources.map((url, idx) => ({
+          id: Date.now() + idx,
+          name: `Resource ${idx + 1}`,
+          url,
+          type: 'other' as const
+        }))
+      });
+
+      // Reset form and navigate
+      this.form.reset();
+      this.resources.clear();
+      alert('Course added successfully!');
     } else {
       this.form.markAllAsTouched();
       console.warn('Form invalid:', this.form.value);
     }
+  }
+
+  /** Helper to generate random course color */
+  private getRandomColor(): string {
+    const colors = ['#3b82f6', '#8b5cf6', '#ec4899', '#f59e0b', '#10b981', '#06b6d4'];
+    return colors[Math.floor(Math.random() * colors.length)];
   }
 }
