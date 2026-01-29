@@ -25,6 +25,27 @@ function validUrl(control: AbstractControl): ValidationErrors | null {
 }
 
 /**
+ * Custom validator: ensures proper name format (letters, spaces, hyphens only)
+ */
+function validName(control: AbstractControl): ValidationErrors | null {
+  if (!control.value) return null;
+  const value = control.value.trim();
+  const namePattern = /^[a-zA-Z\s\-']+$/;
+  return namePattern.test(value) ? null : { invalidName: true };
+}
+
+/**
+ * Custom validator: ensures instructor name format (proper names only)
+ */
+function validInstructorName(control: AbstractControl): ValidationErrors | null {
+  if (!control.value) return null;
+  const value = control.value.trim();
+  // Must contain at least first and last name, letters only with optional title
+  const namePattern = /^(Dr\.|Prof\.|Professor)?\s*[A-Z][a-z]+(?:\s+[A-Z][a-z]+)+$/;
+  return namePattern.test(value) ? null : { invalidInstructorName: true };
+}
+
+/**
  * Course form with Reactive Forms, custom validators, and FormArray for resources
  */
 @Component({
@@ -42,15 +63,29 @@ export class DataCollectionFormComponent {
   form = new FormGroup({
     name: new FormControl('', {
       nonNullable: true,
-      validators: [Validators.required, Validators.minLength(3)],
+      validators: [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(100),
+        validName
+      ],
     }),
     code: new FormControl('', {
       nonNullable: true,
-      validators: [Validators.required, Validators.pattern(/^[A-Z]{2,4}\s?\d{3,4}$/i)],
+      validators: [
+        Validators.required,
+        Validators.pattern(/^[A-Z]{2,4}\s?\d{3,4}[A-Z]?$/i),
+        Validators.maxLength(10)
+      ],
     }),
     instructor: new FormControl('', {
       nonNullable: true,
-      validators: [Validators.required, Validators.minLength(2)],
+      validators: [
+        Validators.required,
+        Validators.minLength(5),
+        Validators.maxLength(50),
+        validInstructorName
+      ],
       asyncValidators: [this.instructorExists.bind(this)],
       updateOn: 'blur',
     }),
@@ -68,7 +103,11 @@ export class DataCollectionFormComponent {
     this.resources.push(
       new FormControl('', {
         nonNullable: true,
-        validators: [Validators.required, validUrl],
+        validators: [
+          Validators.required,
+          validUrl,
+          Validators.maxLength(500)
+        ],
       })
     );
   }
@@ -86,11 +125,11 @@ export class DataCollectionFormComponent {
       // Get active semester from service
       const activeSemester = this.courseData.activeSemester();
       
-      // Create new course with form data
+      // Create new course with form data (trim whitespace)
       this.courseData.addCourse({
-        name: formValue.name,
-        code: formValue.code,
-        instructor: formValue.instructor,
+        name: formValue.name.trim(),
+        code: formValue.code.trim().toUpperCase(),
+        instructor: formValue.instructor.trim(),
         semester: activeSemester?.name || 'Fall 2024',
         credits: 3, // Default value
         targetGrade: 90, // Default A- target
@@ -100,7 +139,7 @@ export class DataCollectionFormComponent {
         resources: formValue.resources.map((url, idx) => ({
           id: Date.now() + idx,
           name: `Resource ${idx + 1}`,
-          url,
+          url: url.trim(),
           type: 'other' as const
         }))
       });

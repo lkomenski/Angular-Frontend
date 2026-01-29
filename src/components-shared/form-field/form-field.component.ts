@@ -44,8 +44,11 @@ export class FormFieldComponent {
 
     if (e['required']) return 'This field is required.';
     if (e['minlength']) return `Must be at least ${e['minlength'].requiredLength} characters.`;
+    if (e['maxlength']) return `Cannot exceed ${e['maxlength'].requiredLength} characters.`;
     if (e['pattern']) return 'Invalid format (e.g., CS 101, MATH 2210).';
-    if (e['invalidUrl']) return 'Enter a valid URL.';
+    if (e['invalidUrl']) return 'Enter a valid URL (e.g., https://example.com).';
+    if (e['invalidName']) return 'Enter a valid name (letters, spaces, hyphens only).';
+    if (e['invalidInstructorName']) return 'Enter full name with title (e.g., Dr. John Smith, Prof. Jane Doe).';
     if (e['instructorNotFound']) return 'Instructor not found in system.';
     if (e['email']) return 'Enter a valid email address.';
     if (e['eduNotAllowed']) return '.edu emails are not allowed.';
