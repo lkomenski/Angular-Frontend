@@ -44,6 +44,9 @@ export class FormFieldComponent {
 
     if (e['required']) return 'This field is required.';
     if (e['minlength']) return `Must be at least ${e['minlength'].requiredLength} characters.`;
+    if (e['pattern']) return 'Invalid format (e.g., CS 101, MATH 2210).';
+    if (e['invalidUrl']) return 'Enter a valid URL.';
+    if (e['instructorNotFound']) return 'Instructor not found in system.';
     if (e['email']) return 'Enter a valid email address.';
     if (e['eduNotAllowed']) return '.edu emails are not allowed.';
     if (e['emailTaken']) return 'That email is already taken.';

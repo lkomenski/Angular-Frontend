@@ -9,6 +9,8 @@ import {
   ValidationErrors,
   Validators,
 } from '@angular/forms';
+import { Observable, of } from 'rxjs';
+import { delay, map } from 'rxjs/operators';
 import { FormFieldComponent } from '../form-field/form-field.component';
 import { CourseDataService } from '../../services/course-data.service';
 import { Router } from '@angular/router';
@@ -49,6 +51,8 @@ export class DataCollectionFormComponent {
     instructor: new FormControl('', {
       nonNullable: true,
       validators: [Validators.required, Validators.minLength(2)],
+      asyncValidators: [this.instructorExists.bind(this)],
+      updateOn: 'blur',
     }),
     /** Dynamic FormArray for course resources */
     resources: new FormArray<FormControl<string>>([]),
@@ -109,6 +113,35 @@ export class DataCollectionFormComponent {
       this.form.markAllAsTouched();
       console.warn('Form invalid:', this.form.value);
     }
+  }
+
+  /**
+   * Async validator: simulates checking if instructor exists in system
+   * In a real application, this would make an API call to verify instructor
+   */
+  private instructorExists(control: AbstractControl): Observable<ValidationErrors | null> {
+    if (!control.value) return of(null);
+    
+    // Simulate API call with delay
+    return of(control.value).pipe(
+      delay(800),
+      map((name: string) => {
+        // Simulate checking against a database of known instructors
+        const knownInstructors = [
+          'Dr. Smith', 'Prof. Johnson', 'Dr. Williams', 'Prof. Brown',
+          'Dr. Jones', 'Prof. Garcia', 'Dr. Martinez', 'Prof. Davis'
+        ];
+        
+        // Check if instructor name matches any known instructor
+        const exists = knownInstructors.some(instructor => 
+          instructor.toLowerCase().includes(name.toLowerCase()) ||
+          name.toLowerCase().includes(instructor.toLowerCase())
+        );
+        
+        // Return error if instructor not found in system
+        return exists ? null : { instructorNotFound: true };
+      })
+    );
   }
 
   /** Helper to generate random course color */
