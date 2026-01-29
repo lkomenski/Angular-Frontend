@@ -13,13 +13,17 @@ import { timer } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FormFieldComponent } from '../form-field/form-field.component';
 
-// Custom validator (sync)
+/**
+ * Custom validator: prevents .edu email addresses
+ */
 function noSchoolEmail(control: AbstractControl): ValidationErrors | null {
   const v = String(control.value ?? '');
   return /\.edu\s*$/i.test(v) ? { eduNotAllowed: true } : null;
 }
 
-// Async validator (fake “taken email” check)
+/**
+ * Async validator: simulates email availability check
+ */
 function emailAvailable() {
   return (control: AbstractControl) =>
     timer(300).pipe(
@@ -27,7 +31,9 @@ function emailAvailable() {
       map((val) => (val === 'taken@example.com' ? { emailTaken: true } : null))
     );
 }
-
+/**
+ * Data collection form with Reactive Forms, custom validators, and FormArray
+ */
 @Component({
   selector: 'app-data-collection-form',
   standalone: true,
@@ -35,7 +41,7 @@ function emailAvailable() {
   templateUrl: './data-collection-form.component.html',
 })
 export class DataCollectionFormComponent {
-  // FormGroup with 3+ controls + validators
+  /** FormGroup with multiple FormControls and validators */
   form = new FormGroup({
     firstName: new FormControl('', {
       nonNullable: true,
@@ -51,15 +57,16 @@ export class DataCollectionFormComponent {
       asyncValidators: [emailAvailable()],
       updateOn: 'blur',
     }),
-
-    // Dynamic section
+    /** Dynamic FormArray for repeated fields */
     aliases: new FormArray<FormControl<string>>([]),
   });
 
+  /** Getter for easier FormArray access */
   get aliases() {
     return this.form.controls.aliases;
   }
 
+  /** Add new alias field to FormArray */
   addAlias() {
     this.aliases.push(
       new FormControl('', {
@@ -69,10 +76,12 @@ export class DataCollectionFormComponent {
     );
   }
 
+  /** Remove alias field at specified index */
   removeAlias(i: number) {
     this.aliases.removeAt(i);
   }
 
+  /** Handle form submission with validation */
   onSubmit() {
     if (this.form.valid) {
       console.log('Final form value:', this.form.getRawValue());

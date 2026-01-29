@@ -1,5 +1,8 @@
 import { Component, Input } from '@angular/core';
 
+/**
+ * Reusable card layout wrapper with content projection
+ */
 @Component({
   selector: 'app-card',
   standalone: true,
