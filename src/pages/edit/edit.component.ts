@@ -8,11 +8,15 @@ import { ReactiveFormsModule, FormControl, FormGroup, Validators } from '@angula
 import { CardComponent } from '../../components-shared/card/card.component';
 import { FormFieldComponent } from '../../components-shared/form-field/form-field.component';
 
+// Type definition for the form structure
 type ItemForm = {
   name: FormControl<string>;
   category: FormControl<string>;
 };
 
+/**
+ * Create/Edit component with route-based mode detection
+ */
 @Component({
   selector: 'app-edit',
   standalone: true,
@@ -22,6 +26,7 @@ type ItemForm = {
 export class CreateEditComponent {
   private readonly route = inject(ActivatedRoute);
 
+  /** Convert route parameter Observable to Signal */
   private readonly idParam = toSignal(
     this.route.paramMap.pipe(map((p) => p.get('id'))),
     { initialValue: null },
@@ -30,7 +35,7 @@ export class CreateEditComponent {
   id = computed(() => this.idParam());
   mode = computed(() => (this.id() ? 'Edit' : 'Create'));
 
-  // Reactive form + validators 
+  /** Reactive form with validation */
   form = new FormGroup<ItemForm>({
     name: new FormControl('', {
       nonNullable: true,
@@ -42,9 +47,10 @@ export class CreateEditComponent {
     }),
   });
 
-  // Derived state (like your canSave, but based on form validity)
+  /** Computed save button state */
   canSave = computed(() => this.form.valid);
 
+  /** Handle form submission */
   save() {
     if (this.form.invalid) {
       this.form.markAllAsTouched();

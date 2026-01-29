@@ -3,8 +3,12 @@ import { Router, RouterLink } from '@angular/router';
 import { CardComponent } from '../../components-shared/card/card.component';
 import { TableComponent } from '../../components-shared/table/table.component';
 
+// Type definition for Item objects
 type Item = { id: number; name: string; category: string };
 
+/**
+ * List component with reactive filtering using Angular Signals
+ */
 @Component({
   selector: 'app-list',
   standalone: true,
@@ -27,6 +31,7 @@ export class ListComponent {
     { id: 4, name: 'Nova', category: 'Youthful' },
   ]);
 
+  /** Computed property for reactive filtering */
   filteredRows = computed(() => {
     const q = this.query().trim().toLowerCase();
     if (!q) return this.rows();
@@ -38,8 +43,16 @@ export class ListComponent {
     );
   });
 
+  // ==================== DEPENDENCY INJECTION ====================
+  
   constructor(private router: Router) {}
 
+  // ==================== NAVIGATION METHODS ====================
+
+  /**
+   * Navigates to the detail page for the selected item
+   * Demonstrates programmatic navigation with route parameters
+   */
   openDetail(row: Item) {
     this.router.navigate(['/detail', row.id]);
   }

@@ -2,6 +2,9 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
+/**
+ * Reusable form field component with Reactive Forms integration
+ */
 @Component({
   selector: 'app-form-field',
   standalone: true,
@@ -10,15 +13,14 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
   styleUrls: ['./form-field.css'],
 })
 export class FormFieldComponent {
-  // Display inputs
   @Input() label = '';
   @Input() placeholder = '';
   @Input() type: 'text' | 'email' | 'number' = 'text';
 
-  // Reactive Forms support
+  /** FormControl for Reactive Forms integration */
   @Input({ required: true }) control!: FormControl<string>;
 
-  // Optional legacy support for two-way binding
+  // Legacy two-way binding support
   @Input() value = '';
   @Output() valueChange = new EventEmitter<string>();
 
@@ -30,10 +32,12 @@ export class FormFieldComponent {
     this.valueChange.emit((evt.target as HTMLInputElement).value);
   }
 
+  /** Shows errors only after user interaction */
   showError(): boolean {
     return this.control.invalid && (this.control.touched || this.control.dirty);
   }
 
+  /** Returns appropriate error message based on validation errors */
   errorMessage(): string {
     const e = this.control.errors;
     if (!e) return '';

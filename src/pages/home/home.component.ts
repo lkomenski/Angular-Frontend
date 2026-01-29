@@ -3,8 +3,13 @@ import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { CardComponent } from '../../components-shared/card/card.component';
 import { DataCollectionFormComponent } from '../../components-shared/data-collection-form/data-collection-form.component';
+
+// Type definition for Item objects
 type Item = { id: number; name: string; category: string; updated: string };
 
+/**
+ * Home component with Angular Signals and search functionality
+ */
 @Component({
   selector: 'app-home',
   imports: [RouterLink, CommonModule, CardComponent, DataCollectionFormComponent],
@@ -12,7 +17,7 @@ type Item = { id: number; name: string; category: string; updated: string };
   styleUrl: './home.css'
 })
 export class HomeComponent {
-  // Add required properties that are used in the template
+  // Angular Signals for reactive state
   liveMessage = signal('Welcome to the home page');
   stats = signal({ total: 0, categories: 0, latest: 0 });
   query = signal('');
@@ -20,7 +25,6 @@ export class HomeComponent {
   showTips = signal(false);
   recent = signal<Item[]>([]);
 
-  // Add required methods
   clearSearch() {
     this.query.set('');
   }
@@ -30,7 +34,9 @@ export class HomeComponent {
   }
 
   onSearchKeydown(event: KeyboardEvent) {
-    // Handle search keydown
+    if (event.key === 'Escape') {
+      this.clearSearch();
+    }
   }
 
   toggleTips() {
