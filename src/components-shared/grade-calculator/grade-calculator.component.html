@@ -41,18 +41,18 @@
       <h3 class="text-xl font-semibold text-white mb-2">Enter Hypothetical Scores</h3>
       <p class="text-sm text-gray-400 mb-6">Adjust scores to see how they affect your final grade</p>
 
-      <section class="overflow-x-auto" role="table" aria-label="Hypothetical assignment scores">
+      <section class="overflow-x-auto" aria-label="Hypothetical assignment scores">
         <div class="min-w-full">
-          <header class="grid grid-cols-5 gap-4 p-4 bg-white/5 border-b border-white/10 font-medium text-sm text-gray-300 uppercase tracking-wide" role="row">
+          <div class="grid grid-cols-5 gap-4 p-4 bg-white/5 border-b border-white/10 font-medium text-sm text-gray-300 uppercase tracking-wide">
             <div>Assignment</div>
             <div>Category</div>
             <div>Weight</div>
             <div>Score</div>
             <div>Max</div>
-          </header>
+          </div>
 
           @for (assignment of whatIfAssignments(); track assignment.id) {
-            <article class="grid grid-cols-5 gap-4 p-4 border-b border-white/5 items-center" role="row">
+            <div class="grid grid-cols-5 gap-4 p-4 border-b border-white/5 items-center">
               <div class="text-white font-medium">{{ assignment.name }}</div>
               <div>
                 <span class="px-2 py-1 text-xs bg-purple-500/20 text-purple-300 rounded">{{ assignment.category }}</span>
@@ -71,7 +71,7 @@
                 />
               </div>
               <div class="text-gray-300">{{ assignment.pointsPossible }}</div>
-            </article>
+            </div>
           }
         </div>
       </section>
@@ -111,11 +111,11 @@
         </section>
 
         @if (targetDifference() >= 0) {
-          <aside class="p-4 bg-green-500/20 border border-green-500/30 rounded-lg text-green-300 mb-6">
+          <aside class="p-4 bg-green-500/20 border border-green-500/30 rounded-lg text-green-300 mb-6" aria-label="Target grade status">
             ✅ You're on track to meet your target grade!
           </aside>
         } @else {
-          <aside class="p-4 bg-yellow-500/20 border border-yellow-500/30 rounded-lg text-yellow-300 mb-6">
+          <aside class="p-4 bg-yellow-500/20 border border-yellow-500/30 rounded-lg text-yellow-300 mb-6" aria-label="Target grade warning">
             ⚠️ You need {{ Math.abs(targetDifference()).toFixed(2) }}% more to reach your target
           </aside>
         }

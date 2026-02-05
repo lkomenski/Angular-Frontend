@@ -8,10 +8,13 @@
 
   <tbody>
     <tr
-      *ngFor="let r of rows; trackBy: trackByIndex"
+      *ngFor="let r of rows; trackBy: trackByIndex; let i = index"
       (click)="rowClick.emit(r)"
-      class="cursor-pointer transition-[background] duration-[120ms] ease hover:bg-white/[0.06]"
+      (keydown)="onRowKeydown($event, r)"
+      class="cursor-pointer transition-[background] duration-[120ms] ease hover:bg-white/[0.06] focus:outline-none focus:bg-white/[0.08]"
       title="Click to open detail"
+      tabindex="0"
+      [attr.aria-label]="'Row ' + (i + 1) + ' - Click to view details'"
     >
       <td *ngFor="let c of columns; trackBy: trackByIndex" 
           class="px-3 py-3 text-left border-b border-white/[0.08]">{{ r[c.key] }}</td>

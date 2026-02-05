@@ -3,7 +3,6 @@ import { Router, RouterLink } from '@angular/router';
 import { CardComponent } from '../../components-shared/card/card.component';
 import { TableComponent } from '../../components-shared/table/table.component';
 import { CourseDataService } from '../../services/course-data.service';
-import { Course } from '../../models/course.model';
 
 /**
  * List component displaying all courses with filtering
@@ -28,8 +27,8 @@ export class ListComponent {
   // ==================== DEPENDENCY INJECTION ====================
   
   constructor(
-    private router: Router,
-    private courseData: CourseDataService
+    private readonly router: Router,
+    private readonly courseData: CourseDataService
   ) {}
 
   // Get courses with grade information

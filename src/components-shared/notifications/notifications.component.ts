@@ -13,7 +13,7 @@ import { CourseDataService } from '../../services/course-data.service';
   templateUrl: './notifications.component.html'
 })
 export class NotificationsComponent {
-  private courseData = inject(CourseDataService);
+  private readonly courseData = inject(CourseDataService);
 
   notifications = this.courseData.notificationsSignal;
 

@@ -20,7 +20,7 @@ import { Router } from '@angular/router';
  */
 function validUrl(control: AbstractControl): ValidationErrors | null {
   if (!control.value) return null;
-  const urlPattern = /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)$/;
+  const urlPattern = /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)$/;
   return urlPattern.test(control.value) ? null : { invalidUrl: true };
 }
 
@@ -56,8 +56,8 @@ function validInstructorName(control: AbstractControl): ValidationErrors | null 
   styleUrls: ['./data-collection-form.component.css'],
 })
 export class DataCollectionFormComponent {
-  private courseData = inject(CourseDataService);
-  private router = inject(Router);
+  private readonly courseData = inject(CourseDataService);
+  private readonly router = inject(Router);
 
   /** FormGroup for course information */
   form = new FormGroup({

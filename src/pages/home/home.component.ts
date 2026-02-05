@@ -19,7 +19,7 @@ type Item = { id: number; name: string; category: string; updated: string };
 })
 export class HomeComponent {
   // Inject course data service
-  private courseData = inject(CourseDataService);
+  private readonly courseData = inject(CourseDataService);
 
   // Use service signals
   liveMessage = signal('Welcome to Course Manager');

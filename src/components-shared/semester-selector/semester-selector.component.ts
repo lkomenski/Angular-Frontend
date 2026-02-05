@@ -12,13 +12,13 @@ import { CourseDataService } from '../../services/course-data.service';
   templateUrl: './semester-selector.component.html'
 })
 export class SemesterSelectorComponent {
-  private courseData = inject(CourseDataService);
+  private readonly courseData = inject(CourseDataService);
 
   semesters = this.courseData.semestersSignal;
   activeSemester = this.courseData.activeSemester;
 
   onSemesterChange(semesterId: string) {
-    const id = parseInt(semesterId, 10);
+    const id = Number.parseInt(semesterId, 10);
     // Update the active semester by setting isCurrent flag
     this.courseData.semestersSignal.update(semesters =>
       semesters.map(s => ({

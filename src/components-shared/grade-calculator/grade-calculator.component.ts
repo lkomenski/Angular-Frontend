@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CardComponent } from '../../components-shared/card/card.component';
 import { CourseDataService } from '../../services/course-data.service';
-import { Course } from '../../models/course.model';
 
 interface WhatIfAssignment {
   id: string;
@@ -24,7 +23,7 @@ interface WhatIfAssignment {
   templateUrl: './grade-calculator.component.html'
 })
 export class GradeCalculatorComponent {
-  private courseData = inject(CourseDataService);
+  private readonly courseData = inject(CourseDataService);
   protected Math = Math;
 
   selectedCourseId = signal<number | null>(null);
@@ -50,28 +49,29 @@ export class GradeCalculatorComponent {
   selectCourse(courseId: number | null) {
     this.selectedCourseId.set(courseId);
     
-    if (courseId !== null) {
-      const course = this.courses().find(c => c.id === courseId);
-      if (course) {
-        this.whatIfAssignments.set(
-          course.assignments.map(a => ({
-            id: String(a.id),
-            name: a.name,
-            category: a.category,
-            pointsPossible: a.pointsPossible,
-            weight: a.weight,
-            hypotheticalScore: a.pointsEarned
-          }))
-        );
-      }
-    } else {
+    if (courseId === null) {
       this.whatIfAssignments.set([]);
+      return;
+    }
+    
+    const course = this.courses().find(c => c.id === courseId);
+    if (course) {
+      this.whatIfAssignments.set(
+        course.assignments.map(a => ({
+          id: String(a.id),
+          name: a.name,
+          category: a.category,
+          pointsPossible: a.pointsPossible,
+          weight: a.weight,
+          hypotheticalScore: a.pointsEarned
+        }))
+      );
     }
   }
 
   // Update hypothetical score for an assignment
   updateHypotheticalScore(assignmentId: string, value: string) {
-    const score = value === '' ? null : parseFloat(value);
+    const score = value === '' ? null : Number.parseFloat(value);
     this.whatIfAssignments.update(assignments =>
       assignments.map(a =>
         a.id === assignmentId ? { ...a, hypotheticalScore: score } : a

@@ -9,8 +9,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
   selector: 'app-form-field',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './form-field.html',
-  styleUrls: ['./form-field.css'],
+  templateUrl: './form-field.html'
 })
 export class FormFieldComponent {
   @Input() label = '';

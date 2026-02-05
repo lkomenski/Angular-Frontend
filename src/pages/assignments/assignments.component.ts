@@ -14,7 +14,7 @@ import { Assignment } from '../../models/course.model';
   templateUrl: './assignments.html'
 })
 export class AssignmentsComponent {
-  private courseData = inject(CourseDataService);
+  private readonly courseData = inject(CourseDataService);
 
   // Filter options
   filterStatus = signal<'all' | 'pending' | 'submitted' | 'graded' | 'overdue'>('all');

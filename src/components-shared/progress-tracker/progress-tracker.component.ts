@@ -12,7 +12,7 @@ import { CourseDataService } from '../../services/course-data.service';
   templateUrl: './progress-tracker.component.html'
 })
 export class ProgressTrackerComponent {
-  private courseData = inject(CourseDataService);
+  private readonly courseData = inject(CourseDataService);
 
   activeSemester = this.courseData.activeSemester;
   semesters = this.courseData.semestersSignal;
@@ -82,23 +82,23 @@ export class ProgressTrackerComponent {
 
   // Convert percentage grade to GPA
   gradeToGPA(grade: number): number {
-    if (grade >= 93) return 4.0;
+    if (grade >= 93) return 4;
     if (grade >= 90) return 3.7;
     if (grade >= 87) return 3.3;
-    if (grade >= 83) return 3.0;
+    if (grade >= 83) return 3;
     if (grade >= 80) return 2.7;
     if (grade >= 77) return 2.3;
-    if (grade >= 73) return 2.0;
+    if (grade >= 73) return 2;
     if (grade >= 70) return 1.7;
     if (grade >= 67) return 1.3;
-    if (grade >= 63) return 1.0;
+    if (grade >= 63) return 1;
     if (grade >= 60) return 0.7;
-    return 0.0;
+    return 0;
   }
 
   getGPAClass(gpa: number): string {
     if (gpa >= 3.5) return 'excellent';
-    if (gpa >= 3.0) return 'good';
+    if (gpa >= 3) return 'good';
     if (gpa >= 2.5) return 'average';
     return 'poor';
   }
