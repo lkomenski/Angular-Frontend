@@ -9,8 +9,7 @@ import { CourseDataService } from '../../services/course-data.service';
   selector: 'app-progress-tracker',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './progress-tracker.component.html',
-  styleUrl: './progress-tracker.component.css'
+  templateUrl: './progress-tracker.component.html'
 })
 export class ProgressTrackerComponent {
   private courseData = inject(CourseDataService);

@@ -15,8 +15,7 @@ type Item = { id: number; name: string; category: string; updated: string };
 @Component({
   selector: 'app-home',
   imports: [RouterLink, CommonModule, CardComponent, DataCollectionFormComponent],
-  templateUrl: './home.html',
-  styleUrl: './home.css'
+  templateUrl: './home.html'
 })
 export class HomeComponent {
   // Inject course data service

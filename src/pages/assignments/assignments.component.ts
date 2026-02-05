@@ -11,8 +11,7 @@ import { Assignment } from '../../models/course.model';
   selector: 'app-assignments',
   standalone: true,
   imports: [CommonModule, CardComponent],
-  templateUrl: './assignments.html',
-  styleUrl: './assignments.css'
+  templateUrl: './assignments.html'
 })
 export class AssignmentsComponent {
   private courseData = inject(CourseDataService);

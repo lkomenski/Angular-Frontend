@@ -1,93 +1,98 @@
-<main class="page-container" role="main">
-  <header class="page-header">
+<main class="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white p-6" role="main">
+  <header class="text-center mb-8">
     <section>
-      <h1 class="page-title">Assignment Tracker</h1>
-      <p class="page-subtitle">Manage and track all your assignments across courses</p>
+      <h1 class="text-3xl font-bold mb-4">Assignment Tracker</h1>
+      <p class="text-lg text-gray-300">Manage and track all your assignments across courses</p>
     </section>
   </header>
 
   <!-- Statistics Overview -->
-  <section class="stats-grid" aria-label="Assignment statistics">
+  <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 mb-8" aria-label="Assignment statistics">
     <app-card ariaLabel="Total assignments">
-      <article class="stat-card">
-        <p class="stat-value">{{ stats().total }}</p>
-        <p class="stat-label">Total Assignments</p>
+      <article class="text-center">
+        <p class="text-2xl font-bold text-white mb-1">{{ stats().total }}</p>
+        <p class="text-sm text-gray-400">Total Assignments</p>
       </article>
     </app-card>
 
     <app-card ariaLabel="Pending assignments">
-      <article class="stat-card status-pending">
-        <p class="stat-value">{{ stats().pending }}</p>
-        <p class="stat-label">Pending</p>
+      <article class="text-center">
+        <p class="text-2xl font-bold text-yellow-400 mb-1">{{ stats().pending }}</p>
+        <p class="text-sm text-gray-400">Pending</p>
       </article>
     </app-card>
 
     <app-card ariaLabel="Submitted assignments">
-      <article class="stat-card status-submitted">
-        <p class="stat-value">{{ stats().submitted }}</p>
-        <p class="stat-label">Submitted</p>
+      <article class="text-center">
+        <p class="text-2xl font-bold text-blue-400 mb-1">{{ stats().submitted }}</p>
+        <p class="text-sm text-gray-400">Submitted</p>
       </article>
     </app-card>
 
     <app-card ariaLabel="Graded assignments">
-      <article class="stat-card status-graded">
-        <p class="stat-value">{{ stats().graded }}</p>
-        <p class="stat-label">Graded</p>
+      <article class="text-center">
+        <p class="text-2xl font-bold text-green-400 mb-1">{{ stats().graded }}</p>
+        <p class="text-sm text-gray-400">Graded</p>
       </article>
     </app-card>
 
     <app-card ariaLabel="Overdue assignments">
-      <article class="stat-card status-overdue">
-        <p class="stat-value">{{ stats().overdue }}</p>
-        <p class="stat-label">Overdue</p>
+      <article class="text-center">
+        <p class="text-2xl font-bold text-red-400 mb-1">{{ stats().overdue }}</p>
+        <p class="text-sm text-gray-400">Overdue</p>
       </article>
     </app-card>
   </section>
 
   <!-- Filters and Controls -->
   <app-card ariaLabel="Filter controls">
-    <section class="filters">
-      <section class="filter-group">
-        <label class="filter-label">Filter by Status:</label>
-        <nav class="filter-buttons" aria-label="Status filter buttons">
+    <section class="space-y-6">
+      <section class="space-y-2">
+        <label class="block text-sm font-medium text-gray-300">Filter by Status:</label>
+        <nav class="flex flex-wrap gap-2" aria-label="Status filter buttons">
           <button 
-            class="filter-btn" 
-            [class.active]="filterStatus() === 'all'"
+            class="px-4 py-2 rounded-lg border border-white/20 text-white hover:bg-white/10 transition-colors" 
+            [class.bg-blue-600]="filterStatus() === 'all'"
+            [class.border-blue-500]="filterStatus() === 'all'"
             (click)="setFilter('all')">
             All
           </button>
           <button 
-            class="filter-btn" 
-            [class.active]="filterStatus() === 'pending'"
+            class="px-4 py-2 rounded-lg border border-white/20 text-white hover:bg-white/10 transition-colors" 
+            [class.bg-yellow-600]="filterStatus() === 'pending'"
+            [class.border-yellow-500]="filterStatus() === 'pending'"
             (click)="setFilter('pending')">
             Pending
           </button>
           <button 
-            class="filter-btn" 
-            [class.active]="filterStatus() === 'submitted'"
+            class="px-4 py-2 rounded-lg border border-white/20 text-white hover:bg-white/10 transition-colors" 
+            [class.bg-blue-600]="filterStatus() === 'submitted'"
+            [class.border-blue-500]="filterStatus() === 'submitted'"
             (click)="setFilter('submitted')">
             Submitted
           </button>
           <button 
-            class="filter-btn" 
-            [class.active]="filterStatus() === 'graded'"
+            class="px-4 py-2 rounded-lg border border-white/20 text-white hover:bg-white/10 transition-colors" 
+            [class.bg-green-600]="filterStatus() === 'graded'"
+            [class.border-green-500]="filterStatus() === 'graded'"
             (click)="setFilter('graded')">
             Graded
           </button>
           <button 
-            class="filter-btn" 
-            [class.active]="filterStatus() === 'overdue'"
+            class="px-4 py-2 rounded-lg border border-white/20 text-white hover:bg-white/10 transition-colors" 
+            [class.bg-red-600]="filterStatus() === 'overdue'"
+            [class.border-red-500]="filterStatus() === 'overdue'"
             (click)="setFilter('overdue')">
             Overdue
           </button>
         </nav>
       </section>
 
-      <section class="filter-group">
-        <label class="filter-label" for="course-filter">Filter by Course:</label>
+      <section class="space-y-2">
+        <label class="block text-sm font-medium text-gray-300" for="course-filter">Filter by Course:</label>
         <select 
           id="course-filter"
-          class="filter-select"
+          class="w-full px-3 py-2 bg-white/5 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           [value]="filterCourse() || ''"
           (change)="setCourseFilter($any($event.target).value ? +$any($event.target).value : null)">
           <option value="">All Courses</option>
@@ -97,11 +102,11 @@
         </select>
       </section>
 
-      <section class="filter-group">
-        <label class="filter-label" for="sort-select">Sort by:</label>
+      <section class="space-y-2">
+        <label class="block text-sm font-medium text-gray-300" for="sort-select">Sort by:</label>
         <select 
           id="sort-select"
-          class="filter-select"
+          class="w-full px-3 py-2 bg-white/5 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           [value]="sortBy()"
           (change)="setSortBy($any($event.target).value)">
           <option value="dueDate">Due Date</option>
@@ -115,68 +120,71 @@
   <!-- Assignments List -->
   <app-card ariaLabel="Assignments list">
     <section aria-labelledby="assignments-heading">
-      <header class="panel-header">
-        <h2 id="assignments-heading" class="panel-title">
+      <header class="flex items-start justify-between mb-6">
+        <h2 id="assignments-heading" class="text-xl font-semibold text-white">
           Assignments ({{ filteredAssignments().length }})
         </h2>
       </header>
 
       @if (filteredAssignments().length === 0) {
-        <div class="empty-state">
-          <p class="empty-title">No assignments found</p>
-          <p class="empty-sub">Try adjusting your filters</p>
+        <div class="text-center py-12">
+          <p class="text-xl font-medium text-white mb-2">No assignments found</p>
+          <p class="text-gray-400">Try adjusting your filters</p>
         </div>
       } @else {
-        <div class="assignments-list" role="list" aria-label="Filtered assignments">
+        <div class="space-y-4" role="list" aria-label="Filtered assignments">
           @for (assignment of filteredAssignments(); track assignment.id) {
-            <article class="assignment-card" [attr.data-status]="assignment.status" role="listitem">
-              <div class="assignment-header">
-                <div class="assignment-course">
+            <article class="p-4 rounded-lg bg-white/5 border border-white/10 space-y-4" [attr.data-status]="assignment.status" role="listitem">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
                   <span 
-                    class="course-badge" 
+                    class="px-2 py-1 text-xs font-medium rounded" 
                     [style.background-color]="assignment.courseColor">
                     {{ assignment.courseCode }}
                   </span>
-                  <span class="course-name">{{ assignment.courseName }}</span>
+                  <span class="text-sm text-gray-300">{{ assignment.courseName }}</span>
                 </div>
-                <span class="assignment-category">
+                <span class="text-sm text-gray-400 flex items-center gap-1">
                   {{ getCategoryIcon(assignment.category) }} {{ assignment.category }}
                 </span>
               </div>
 
-              <div class="assignment-main">
-                <h3 class="assignment-name">{{ assignment.name }}</h3>
+              <div>
+                <h3 class="text-lg font-medium text-white mb-2">{{ assignment.name }}</h3>
                 @if (assignment.description) {
-                  <p class="assignment-description">{{ assignment.description }}</p>
+                  <p class="text-sm text-gray-400 mb-4">{{ assignment.description }}</p>
                 }
               </div>
 
-              <div class="assignment-details">
-                <div class="detail-item">
-                  <span class="detail-label">Due:</span>
-                  <span class="detail-value due-date" [class.urgent]="getDaysUntilDue(assignment.dueDate) <= 2">
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4 border-t border-white/10">
+                <div class="space-y-1">
+                  <span class="text-xs text-gray-500 uppercase tracking-wide">Due:</span>
+                  <span class="block text-sm text-white" [class.text-red-400]="getDaysUntilDue(assignment.dueDate) <= 2">
                     {{ formatDate(assignment.dueDate) }}
                     @if (getDaysUntilDue(assignment.dueDate) >= 0) {
-                      <span class="days-until">({{ getDaysUntilDue(assignment.dueDate) }} days)</span>
+                      <span class="text-xs text-gray-400">({{ getDaysUntilDue(assignment.dueDate) }} days)</span>
                     }
                   </span>
                 </div>
 
-                <div class="detail-item">
-                  <span class="detail-label">Points:</span>
-                  <span class="detail-value">{{ assignment.pointsPossible }} pts ({{ assignment.weight }}% weight)</span>
+                <div class="space-y-1">
+                  <span class="text-xs text-gray-500 uppercase tracking-wide">Points:</span>
+                  <span class="block text-sm text-white">{{ assignment.pointsPossible }} pts ({{ assignment.weight }}% weight)</span>
                 </div>
 
-                <div class="detail-item">
-                  <span class="detail-label">Grade:</span>
-                  <span class="detail-value">{{ getGradeDisplay(assignment) }}</span>
+                <div class="space-y-1">
+                  <span class="text-xs text-gray-500 uppercase tracking-wide">Grade:</span>
+                  <span class="block text-sm text-white">{{ getGradeDisplay(assignment) }}</span>
                 </div>
 
-                <div class="detail-item">
-                  <span class="detail-label">Status:</span>
+                <div class="space-y-1">
+                  <span class="text-xs text-gray-500 uppercase tracking-wide">Status:</span>
                   <select 
-                    class="status-select"
-                    [class]="getStatusClass(assignment.status)"
+                    class="text-sm px-2 py-1 bg-white/5 border border-white/20 rounded text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    [class.text-yellow-400]="assignment.status === 'pending'"
+                    [class.text-blue-400]="assignment.status === 'submitted'"
+                    [class.text-green-400]="assignment.status === 'graded'"
+                    [class.text-red-400]="assignment.status === 'overdue'"
                     [value]="assignment.status"
                     (change)="updateAssignmentStatus(assignment.id, assignment.courseId, $any($event.target).value)">
                     <option value="pending">Pending</option>

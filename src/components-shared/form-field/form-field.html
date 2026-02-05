@@ -1,8 +1,8 @@
-<div class="field">
-  <label [for]="inputId" class="label">{{ label }}</label>
+<div class="block my-3">
+  <label [for]="inputId" class="block font-bold mb-1.5 opacity-90 text-white">{{ label }}</label>
 
   <input
-    class="input"
+    class="w-full max-w-[520px] px-3 py-3 rounded-xl border border-white/[0.14] bg-black/[0.22] text-gray-200 outline-none focus:border-blue-400/55 focus:shadow-[0_0_0_4px_rgba(120,160,255,0.18)] transition-all"
     [id]="inputId"
     [type]="type"
     [placeholder]="placeholder"
@@ -11,7 +11,7 @@
     [attr.aria-describedby]="showError() ? errorId : null"
   />
 
-  <p *ngIf="showError()" class="error" [id]="errorId">
+  <p *ngIf="showError()" class="mt-2 text-sm text-red-400" [id]="errorId">
     {{ errorMessage() }}
   </p>
 </div>

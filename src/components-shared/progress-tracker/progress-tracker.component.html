@@ -1,79 +1,83 @@
-<section class="progress-tracker" aria-labelledby="tracker-heading">
-  <h2 id="tracker-heading" class="tracker-title">Progress Tracker</h2>
-  <p class="tracker-subtitle">Track your academic progress across all courses</p>
+<section class="py-4" aria-labelledby="tracker-heading">
+  <h2 id="tracker-heading" class="text-2xl font-bold text-white mb-2">Progress Tracker</h2>
+  <p class="text-gray-300 mb-8">Track your academic progress across all courses</p>
 
   <!-- Overall Stats -->
-  <section class="overall-stats" aria-label="Overall statistics" role="group">
-    <article class="stat-card">
-      <p class="stat-icon" aria-hidden="true">📚</p>
-      <p class="stat-value">{{ activeSemester().name || 'N/A' }}</p>
-      <p class="stat-label">Current Semester</p>
+  <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8" aria-label="Overall statistics" role="group">
+    <article class="text-center p-6 bg-white/5 border border-white/10 rounded-lg">
+      <p class="text-3xl mb-3" aria-hidden="true">📚</p>
+      <p class="text-3xl font-bold text-white leading-none mb-2">{{ activeSemester().name || 'N/A' }}</p>
+      <p class="text-sm text-gray-400">Current Semester</p>
     </article>
 
-    <article class="stat-card">
-      <p class="stat-icon" aria-hidden="true">🎯</p>
-      <p class="stat-value">{{ activeCourseCount() }}</p>
-      <p class="stat-label">Active Courses</p>
+    <article class="text-center p-6 bg-white/5 border border-white/10 rounded-lg">
+      <p class="text-3xl mb-3" aria-hidden="true">🎯</p>
+      <p class="text-3xl font-bold text-white leading-none mb-2">{{ activeCourseCount() }}</p>
+      <p class="text-sm text-gray-400">Active Courses</p>
     </article>
 
-    <article class="stat-card">
-      <p class="stat-icon" aria-hidden="true">📈</p>
-      <p class="stat-value" [class]="getGPAClass(semesterGPA())">
+    <article class="text-center p-6 bg-white/5 border border-white/10 rounded-lg">
+      <p class="text-3xl mb-3" aria-hidden="true">📈</p>
+      <p class="text-3xl font-bold leading-none mb-2" [class.text-green-400]="getGPAClass(semesterGPA()) === 'excellent'" [class.text-blue-400]="getGPAClass(semesterGPA()) === 'good'" [class.text-yellow-400]="getGPAClass(semesterGPA()) === 'average'" [class.text-red-400]="getGPAClass(semesterGPA()) === 'poor'" [class.text-white]="!getGPAClass(semesterGPA())">
         {{ semesterGPA().toFixed(2) }}
       </p>
-      <p class="stat-label">Semester GPA</p>
+      <p class="text-sm text-gray-400">Semester GPA</p>
     </article>
 
-    <article class="stat-card">
-      <p class="stat-icon" aria-hidden="true">✅</p>
-      <p class="stat-value">{{ completionRate().toFixed(0) }}%</p>
-      <p class="stat-label">Completion Rate</p>
+    <article class="text-center p-6 bg-white/5 border border-white/10 rounded-lg">
+      <p class="text-3xl mb-3" aria-hidden="true">✅</p>
+      <p class="text-3xl font-bold text-white leading-none mb-2">{{ completionRate().toFixed(0) }}%</p>
+      <p class="text-sm text-gray-400">Completion Rate</p>
     </article>
   </section>
 
   <!-- Course Progress Bars -->
-  <section class="course-progress-section" aria-labelledby="course-progress-heading">
-    <h3 id="course-progress-heading" class="section-title">Course Progress</h3>
+  <section class="mb-8" aria-labelledby="course-progress-heading">
+    <h3 id="course-progress-heading" class="text-xl font-semibold text-white mb-4">Course Progress</h3>
     
     @for (course of coursesWithProgress(); track course.id) {
-      <article class="progress-item" [attr.aria-label]="course.code + ' progress'">
-        <header class="progress-header">
-          <section class="course-info">
-            <span class="course-badge" [style.background-color]="course.color">
+      <article class="p-6 bg-white/5 border border-white/10 rounded-lg mb-4" [attr.aria-label]="course.code + ' progress'">
+        <header class="flex justify-between items-center mb-4 flex-wrap gap-2">
+          <section class="flex items-center gap-3">
+            <span class="px-3 py-1 text-xs font-semibold text-white rounded" [style.background-color]="course.color">
               {{ course.code }}
             </span>
-            <span class="course-name">{{ course.name }}</span>
+            <span class="font-semibold text-white">{{ course.name }}</span>
           </section>
-          <section class="progress-stats">
-            <span class="grade" [class]="getGradeClass(course.currentGrade)">
+          <section class="flex items-center gap-4 text-sm">
+            <span class="font-semibold" [class.text-green-400]="getGradeClass(course.currentGrade) === 'excellent'" [class.text-blue-400]="getGradeClass(course.currentGrade) === 'good'" [class.text-yellow-400]="getGradeClass(course.currentGrade) === 'average'" [class.text-red-400]="getGradeClass(course.currentGrade) === 'poor'" [class.text-white]="!getGradeClass(course.currentGrade)">
               {{ course.currentGrade !== null ? course.currentGrade.toFixed(1) + '%' : 'N/A' }}
             </span>
-            <span class="completion">
+            <span class="text-gray-400">
               {{ course.completedAssignments }}/{{ course.totalAssignments }} complete
             </span>
           </section>
         </header>
 
-        <div class="progress-bar-container">
+        <div class="w-full bg-gray-700 rounded-full h-3 mb-4">
           <div 
-            class="progress-bar" 
+            class="h-3 rounded-full transition-all duration-300" 
             [style.width.%]="course.completionPercentage"
-            [class]="getProgressBarClass(course.completionPercentage)">
+            [class.bg-green-500]="getProgressBarClass(course.completionPercentage) === 'excellent'"
+            [class.bg-blue-500]="getProgressBarClass(course.completionPercentage) === 'good'"
+            [class.bg-yellow-500]="getProgressBarClass(course.completionPercentage) === 'average'"
+            [class.bg-red-500]="getProgressBarClass(course.completionPercentage) === 'poor'"
+            [class.bg-gray-500]="!getProgressBarClass(course.completionPercentage)">
           </div>
         </div>
 
-        <section class="progress-details" aria-label="Detailed progress metrics">
-          <article class="detail">
-            <span class="detail-label">Graded:</span>
-            <span class="detail-value">{{ course.gradedCount }}</span>
+        <section class="flex justify-between text-sm" aria-label="Detailed progress metrics">
+          <article class="text-center">
+            <span class="block text-gray-400 mb-1">Graded:</span>
+            <span class="font-semibold text-white">{{ course.gradedCount }}</span>
           </article>
-          <article class="detail">
-            <span class="detail-label">Pending:</span>
-            <span class="detail-value">{{ course.pendingCount }}</span>
+          <article class="text-center">
+            <span class="block text-gray-400 mb-1">Pending:</span>
+            <span class="font-semibold text-white">{{ course.pendingCount }}</span>
           </article>
-          <article class="detail">
-            <span class="detail-label">Target:</span>
-            <span class="detail-value">{{ course.targetGrade }}%</span>
+          <article class="text-center">
+            <span class="block text-gray-400 mb-1">Target:</span>
+            <span class="font-semibold text-white">{{ course.targetGrade }}%</span>
           </article>
         </section>
       </article>
@@ -81,25 +85,28 @@
   </section>
 
   <!-- Semester Timeline -->
-  <section class="timeline-section" aria-labelledby="timeline-heading">
-    <h3 id="timeline-heading" class="section-title">Semester Timeline</h3>
+  <section class="mb-8" aria-labelledby="timeline-heading">
+    <h3 id="timeline-heading" class="text-xl font-semibold text-white mb-4">Semester Timeline</h3>
     
     @for (semester of semesters(); track semester.id) {
-      <article class="timeline-item" [class.active]="semester.isCurrent">
-        <div class="timeline-marker" aria-hidden="true"></div>
-        <section class="timeline-content">
-          <header class="timeline-header">
-            <h4 class="timeline-title">{{ semester.name }}</h4>
+      <article class="relative pl-8 pb-8" [class.opacity-100]="semester.isCurrent" [class.opacity-70]="!semester.isCurrent">
+        <div class="absolute left-0 top-2 w-4 h-4 rounded-full border-2 border-white" [class.bg-blue-500]="semester.isCurrent" [class.bg-gray-600]="!semester.isCurrent" aria-hidden="true"></div>
+        @if (!$last) {
+          <div class="absolute left-2 top-6 w-0.5 h-full bg-white/20" aria-hidden="true"></div>
+        }
+        <section class="bg-white/5 border border-white/10 rounded-lg p-4">
+          <header class="flex justify-between items-start mb-2 flex-wrap gap-2">
+            <h4 class="text-lg font-semibold text-white">{{ semester.name }}</h4>
             @if (semester.isCurrent) {
-              <span class="current-badge">Current</span>
+              <span class="px-2 py-1 text-xs bg-blue-500/20 text-blue-400 border border-blue-500/30 rounded">Current</span>
             }
           </header>
-          <p class="timeline-stats">
+          <p class="flex gap-4 text-sm text-gray-300 mb-2 flex-wrap">
             <span>{{ semester.courseCount }} courses</span>
             <span>GPA: {{ semester.gpa.toFixed(2) }}</span>
             <span>{{ semester.totalCredits }} credits</span>
           </p>
-          <p class="timeline-date">
+          <p class="text-xs text-gray-400">
             {{ formatDate(semester.startDate) }} - {{ formatDate(semester.endDate) }}
           </p>
         </section>

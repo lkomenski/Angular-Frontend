@@ -21,8 +21,7 @@ interface WhatIfAssignment {
   selector: 'app-grade-calculator',
   standalone: true,
   imports: [CommonModule, FormsModule, CardComponent],
-  templateUrl: './grade-calculator.component.html',
-  styleUrl: './grade-calculator.component.css'
+  templateUrl: './grade-calculator.component.html'
 })
 export class GradeCalculatorComponent {
   private courseData = inject(CourseDataService);

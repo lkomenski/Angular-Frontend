@@ -1,32 +1,39 @@
-<section class="notifications-container" aria-labelledby="notif-heading">
-  <h2 id="notif-heading" class="notif-title">Notifications</h2>
-  <p class="notif-subtitle">Stay updated on upcoming assignments and deadlines</p>
+<section class="py-4" aria-labelledby="notif-heading">
+  <h2 id="notif-heading" class="text-2xl font-bold text-white mb-2">Notifications</h2>
+  <p class="text-gray-300 mb-8">Stay updated on upcoming assignments and deadlines</p>
 
   @if (notifications().length === 0) {
-    <div class="empty-state">
-      <div class="empty-icon">🔔</div>
-      <p class="empty-text">No notifications at this time</p>
-      <p class="empty-subtext">You're all caught up!</p>
+    <div class="text-center py-12">
+      <div class="text-6xl mb-4 opacity-50">🔔</div>
+      <p class="text-xl font-semibold text-white mb-2">No notifications at this time</p>
+      <p class="text-gray-400">You're all caught up!</p>
     </div>
   } @else {
-    <div class="notifications-list" role="list" aria-label="Notification items">
+    <div class="flex flex-col gap-4 mb-6" role="list" aria-label="Notification items">
       @for (notification of notifications(); track notification.id) {
-        <article class="notification-card" [class]="'priority-' + notification.priority" role="listitem">
-          <div class="notif-icon">
+        <article class="grid grid-cols-[auto_1fr_auto] gap-4 p-5 rounded-lg border-l-4 transition-all hover:shadow-lg" 
+                 [class.border-l-red-500]="notification.priority === 'high'" 
+                 [class.bg-red-500/5]="notification.priority === 'high'"
+                 [class.border-l-yellow-500]="notification.priority === 'medium'" 
+                 [class.bg-yellow-500/5]="notification.priority === 'medium'"
+                 [class.border-l-blue-500]="notification.priority === 'low'"
+                 [class.bg-white/5]="notification.priority === 'low'"
+                 role="listitem">
+          <div class="flex items-center justify-center w-10 h-10 bg-white/10 rounded-full text-xl">
             {{ getNotificationIcon(notification.type) }}
           </div>
           
-          <div class="notif-content">
-            <div class="notif-header">
-              <h3 class="notif-title-text">{{ notification.title }}</h3>
-              <span class="notif-time">{{ formatTime(notification.createdAt) }}</span>
+          <div class="flex-1">
+            <div class="flex justify-between items-start mb-2 gap-4">
+              <h3 class="font-semibold text-white">{{ notification.title }}</h3>
+              <span class="text-xs text-gray-400 whitespace-nowrap">{{ formatTime(notification.createdAt) }}</span>
             </div>
             
-            <p class="notif-message">{{ notification.message }}</p>
+            <p class="text-sm text-gray-300 mb-3">{{ notification.message }}</p>
             
             @if (notification.actionLink) {
               <a 
-                class="notif-action" 
+                class="inline-flex items-center text-sm text-blue-400 hover:text-blue-300 transition-colors" 
                 [routerLink]="notification.actionLink"
                 [queryParams]="notification.actionParams || {}">
                 {{ notification.actionText || 'View Details' }} →
@@ -35,7 +42,7 @@
           </div>
 
           <button 
-            class="dismiss-btn"
+            class="self-start p-1 text-gray-400 hover:text-white transition-colors"
             (click)="dismissNotification(notification.id)"
             aria-label="Dismiss notification">
             ✕
@@ -44,35 +51,43 @@
       }
     </div>
 
-    <button class="clear-all-btn" (click)="clearAllNotifications()">
+    <button class="w-full py-2 px-4 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors" (click)="clearAllNotifications()">
       Clear All Notifications
     </button>
   }
 
   <!-- Upcoming Assignments Summary -->
-  <section class="upcoming-summary" aria-labelledby="upcoming-heading">
-    <h3 id="upcoming-heading" class="summary-title">Upcoming This Week</h3>
+  <section class="mt-8" aria-labelledby="upcoming-heading">
+    <h3 id="upcoming-heading" class="text-lg font-semibold text-white mb-4">Upcoming This Week</h3>
     
     @if (upcomingAssignments().length === 0) {
-      <p class="summary-empty">No assignments due this week</p>
+      <p class="text-gray-400 text-center py-4">No assignments due this week</p>
     } @else {
-      <div class="assignments-grid">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
         @for (assignment of upcomingAssignments(); track assignment.id) {
-          <div class="assignment-summary">
-            <div class="assignment-due">
-              <div class="due-day">{{ getDayOfMonth(assignment.dueDate) }}</div>
-              <div class="due-month">{{ getMonth(assignment.dueDate) }}</div>
+          <div class="flex items-center gap-4 p-4 bg-white/5 rounded-lg border border-white/10">
+            <div class="text-center min-w-[60px]">
+              <div class="text-2xl font-bold text-white">{{ getDayOfMonth(assignment.dueDate) }}</div>
+              <div class="text-xs text-gray-400 uppercase">{{ getMonth(assignment.dueDate) }}</div>
             </div>
             
-            <div class="assignment-info">
-              <div class="assignment-course">{{ assignment.courseName }}</div>
-              <div class="assignment-name">{{ assignment.name }}</div>
-              <div class="assignment-meta">
+            <div class="flex-1">
+              <div class="text-sm font-medium text-blue-400 mb-1">{{ assignment.courseName }}</div>
+              <div class="font-semibold text-white mb-1">{{ assignment.name }}</div>
+              <div class="text-xs text-gray-400">
                 {{ assignment.pointsPossible }} pts • {{ assignment.category }}
               </div>
             </div>
 
-            <div class="assignment-status" [class]="'status-' + assignment.status">
+            <div class="text-xs px-2 py-1 rounded capitalize" 
+                 [class.bg-yellow-500/20]="assignment.status === 'pending'"
+                 [class.text-yellow-400]="assignment.status === 'pending'"
+                 [class.bg-blue-500/20]="assignment.status === 'submitted'"
+                 [class.text-blue-400]="assignment.status === 'submitted'"
+                 [class.bg-green-500/20]="assignment.status === 'graded'"
+                 [class.text-green-400]="assignment.status === 'graded'"
+                 [class.bg-red-500/20]="assignment.status === 'overdue'"
+                 [class.text-red-400]="assignment.status === 'overdue'">
               {{ assignment.status }}
             </div>
           </div>

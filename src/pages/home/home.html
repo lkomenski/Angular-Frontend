@@ -1,11 +1,10 @@
 <!-- Home page with semantic structure for accessibility and SEO -->
-<main class="page-fullwidth">
+<main class="relative min-h-[calc(100vh-140px)] -mx-[calc(50vw-50%)] p-0">
   <!-- Decorative background (hidden from assistive tech) -->
-  <aside class="bg" aria-hidden="true">
-    <div class="blob b1"></div>
-    <div class="blob b2"></div>
-    <div class="blob b3"></div>
-    <div class="grid"></div>
+  <aside class="absolute inset-[-20px] pointer-events-none z-0" aria-hidden="true" aria-label="Decorative background effects">
+    <div class="absolute top-[10%] left-[5%] w-80 h-80 bg-gradient-to-br from-red-500/30 to-purple-600/30 rounded-full blur-3xl animate-pulse"></div>
+    <div class="absolute top-[60%] right-[10%] w-64 h-64 bg-gradient-to-br from-blue-500/30 to-cyan-500/30 rounded-full blur-2xl animate-pulse" style="animation-delay: 2s;"></div>
+    <div class="absolute bottom-[20%] left-[15%] w-72 h-72 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-full blur-3xl animate-pulse" style="animation-delay: 4s;"></div>
   </aside>
 
   <!-- Screen-reader announcements -->
@@ -13,80 +12,80 @@
     {{ liveMessage() }}
   </section>
 
-  <section class="page-container">
-    <header class="hero">
-      <section class="hero-content">
-        <p class="badge">Angular 21 • Signals • Reactive Forms</p>
+  <section class="relative z-10 max-w-7xl mx-auto px-5">
+    <header class="py-20">
+      <section class="text-center max-w-4xl mx-auto">
+        <p class="inline-block px-4 py-2 mb-6 text-sm font-medium bg-gradient-to-r from-blue-500/20 to-purple-500/20 backdrop-blur-sm border border-white/20 rounded-full text-blue-200">Angular 21 • Signals • Reactive Forms</p>
 
-        <h1 class="title">
-          <span class="title-accent">Course Manager</span> for Students
+        <h1 class="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white via-blue-100 to-purple-200 bg-clip-text text-transparent">
+          <span class="text-blue-400">Course Manager</span> for Students
         </h1>
 
-        <p class="subtitle">
+        <p class="text-lg md:text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
           Organize your courses, track assignments, and manage resources all in one place.
-          Built with <strong>Angular Signals</strong> and modern best practices.
+          Built with <strong class="text-white">Angular Signals</strong> and modern best practices.
         </p>
 
-        <nav class="cta" aria-label="Quick navigation">
-          <a class="btn primary" routerLink="/list" aria-describedby="explore-desc">
+        <nav class="flex flex-col sm:flex-row gap-4 justify-center mb-12" aria-label="Quick navigation">
+          <a class="inline-flex items-center justify-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors" routerLink="/list" aria-describedby="explore-desc">
             View All Courses
             <span id="explore-desc" class="sr-only">View all courses in the application</span>
           </a>
-          <a class="btn" routerLink="/create" aria-describedby="create-desc">
+          <a class="inline-flex items-center justify-center px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-medium rounded-lg border border-white/20 transition-colors" routerLink="/create" aria-describedby="create-desc">
             Add Course
             <span id="create-desc" class="sr-only">Add a new course to your collection</span>
           </a>
         </nav>
 
-        <section class="stats" aria-labelledby="stats-heading">
+        <section class="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-md mx-auto" aria-labelledby="stats-heading">
           <h2 id="stats-heading" class="sr-only">Summary Statistics</h2>
           
-          <article class="stat">
-            <p class="stat-num" aria-describedby="items-label">{{ stats().total }}</p>
-            <p id="items-label" class="stat-label">Courses</p>
+          <article class="text-center">
+            <p class="text-3xl font-bold text-white mb-1" aria-describedby="items-label">{{ stats().total }}</p>
+            <p id="items-label" class="text-sm text-gray-400">Courses</p>
           </article>
 
-          <article class="stat">
-            <p class="stat-num" aria-describedby="categories-label">{{ stats().categories }}</p>
-            <p id="categories-label" class="stat-label">Semesters</p>
+          <article class="text-center">
+            <p class="text-3xl font-bold text-white mb-1" aria-describedby="categories-label">{{ stats().categories }}</p>
+            <p id="categories-label" class="text-sm text-gray-400">Semesters</p>
           </article>
 
-          <article class="stat">
-            <p class="stat-num" aria-describedby="latest-label">{{ stats().latest }}</p>
-            <p id="latest-label" class="stat-label">This Week</p>
+          <article class="text-center">
+            <p class="text-3xl font-bold text-white mb-1" aria-describedby="latest-label">{{ stats().latest }}</p>
+            <p id="latest-label" class="text-sm text-gray-400">This Week</p>
           </article>
         </section>
       </section>
     </header>
 
-    <section class="main-layout">
-      <section class="main-content">
+    <section class="grid lg:grid-cols-3 gap-8 pb-20">
+      <section class="lg:col-span-2">
         <!-- Add Course Form -->
         <app-card ariaLabel="Add course form panel">
           <section aria-labelledby="form-title">
-            <header>
-              <h2 id="form-title" class="panel-title">Add New Course</h2>
-              <p class="panel-sub">Create a course with resources and materials.</p>
+            <header class="mb-6">
+              <h2 id="form-title" class="text-xl font-semibold text-white mb-2">Add New Course</h2>
+              <p class="text-gray-400">Create a course with resources and materials.</p>
             </header>
             <app-data-collection-form></app-data-collection-form>
           </section>
         </app-card>
       </section>
 
-      <aside class="sidebar" aria-labelledby="sidebar-heading">
+      <aside class="space-y-6" aria-labelledby="sidebar-heading">
         <h2 id="sidebar-heading" class="sr-only">Quick Tools and Recent Activity</h2>
       
       <!-- Search panel -->
       <app-card ariaLabel="Search panel">
         <section aria-labelledby="search-title">
-          <header class="panel-header">
+          <header class="flex items-start justify-between mb-4">
             <section>
-              <h2 id="search-title" class="panel-title">Search Courses</h2>
-              <p class="panel-sub">Filter by name or code.</p>
+              <h2 id="search-title" class="text-lg font-medium text-white mb-1">Search Courses</h2>
+              <p class="text-sm text-gray-400">Filter by name or code.</p>
             </section>
 
             <button
-              class="icon-btn"
+              class="p-2 text-gray-400 hover:text-white rounded-md hover:bg-white/10 transition-colors"
               type="button"
               (click)="clearSearch()"
               [attr.aria-label]="query() ? 'Clear search' : 'Search is already empty'"
@@ -95,11 +94,11 @@
             </button>
           </header>
 
-          <form class="search" role="search" aria-label="Search courses">
+          <form class="mb-4" role="search" aria-label="Search courses">
             <label class="sr-only" for="course-search">Search courses</label>
             <input
               id="course-search"
-              class="search-input"
+              class="w-full px-4 py-2 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               type="text"
               [value]="query()"
               (input)="setQuery($any($event.target).value)"
@@ -108,37 +107,37 @@
               autocomplete="off"
               aria-describedby="search-help"
             />
-            <p id="search-help" class="search-hint">
-              Tip: Press <kbd>Esc</kbd> to clear.
+            <p id="search-help" class="text-xs text-gray-500 mt-1">
+              Tip: Press <kbd class="px-1.5 py-0.5 text-xs bg-gray-700 rounded">Esc</kbd> to clear.
             </p>
           </form>
 
-          <section class="list" aria-label="Search results">
+          <section aria-label="Search results">
             @if (query() && filtered().length === 0) {
-              <output class="empty">
-                <p class="empty-title">No matches</p>
-                <p class="empty-sub">Try a different keyword.</p>
+              <output class="text-center py-8">
+                <p class="text-gray-300 mb-1">No matches</p>
+                <p class="text-sm text-gray-500">Try a different keyword.</p>
               </output>
             } @else if (filtered().length > 0) {
-              <ul class="result-list">
+              <ul class="space-y-2">
                 @for (course of filtered(); track course.id) {
                   <li>
                     <a
-                      class="row"
+                      class="flex items-center justify-between p-3 rounded-lg bg-white/5 hover:bg-white/10 transition-colors group"
                       [routerLink]="['/detail', course.id]"
                       [attr.aria-label]="'View details for ' + course.name"
                     >
-                      <section class="row-left">
-                        <span class="pill">{{ course.code }}</span>
-                        <span class="row-text">
-                          <span class="row-name">{{ course.name }}</span>
-                          <span class="row-meta">
+                      <section class="flex items-center gap-3">
+                        <span class="px-2 py-1 text-xs bg-blue-500/20 text-blue-300 rounded">{{ course.code }}</span>
+                        <span>
+                          <span class="block font-medium text-white">{{ course.name }}</span>
+                          <span class="text-sm text-gray-400">
                             <span class="sr-only">Instructor: </span>{{ course.instructor }} • 
                             <span class="sr-only">Semester: </span>{{ course.semester }}
                           </span>
                         </span>
                       </section>
-                      <span class="row-right" aria-hidden="true">View →</span>
+                      <span class="text-gray-400 group-hover:text-white transition-colors" aria-hidden="true">View →</span>
                     </a>
                   </li>
                 }
@@ -151,28 +150,28 @@
       <!-- Recent Courses -->
       <app-card ariaLabel="Recent courses panel">
         <section aria-labelledby="recent-title">
-          <header>
-            <h2 id="recent-title" class="panel-title">Recent Courses</h2>
-            <p class="panel-sub">Your recently updated courses.</p>
+          <header class="mb-4">
+            <h2 id="recent-title" class="text-lg font-medium text-white mb-1">Recent Courses</h2>
+            <p class="text-sm text-gray-400">Your recently updated courses.</p>
           </header>
 
-          <section class="recent-sidebar">
+          <section class="space-y-3">
             @for (course of recent(); track course.id) {
-              <article class="recent-item">
-                <header class="recent-item-header">
-                  <span class="pill alt">{{ course.code }}</span>
-                  <span class="tag">{{ course.semester }}</span>
+              <article class="p-3 rounded-lg bg-white/5">
+                <header class="flex items-center gap-2 mb-2">
+                  <span class="px-2 py-1 text-xs bg-purple-500/20 text-purple-300 rounded">{{ course.code }}</span>
+                  <span class="px-2 py-1 text-xs bg-gray-700 text-gray-300 rounded">{{ course.semester }}</span>
                 </header>
 
-                <h3 class="recent-item-name">{{ course.name }}</h3>
-                <p class="recent-item-meta">
+                <h3 class="font-medium text-white mb-1">{{ course.name }}</h3>
+                <p class="text-sm text-gray-400 mb-3">
                   Instructor: {{ course.instructor }}
                 </p>
 
-                <nav class="recent-actions" aria-label="Actions for {{ course.name }}">
-                  <a class="mini" [routerLink]="['/detail', course.id]" 
+                <nav class="flex gap-2" aria-label="Actions for {{ course.name }}">
+                  <a class="text-xs text-blue-400 hover:text-blue-300 transition-colors" [routerLink]="['/detail', course.id]" 
                      [attr.aria-label]="'View details for ' + course.name">View</a>
-                  <a class="mini" [routerLink]="['/edit', course.id]" 
+                  <a class="text-xs text-blue-400 hover:text-blue-300 transition-colors" [routerLink]="['/edit', course.id]" 
                      [attr.aria-label]="'Edit ' + course.name">Edit</a>
                 </nav>
               </article>
@@ -184,14 +183,14 @@
       <!-- Tips panel -->
       <app-card ariaLabel="Quick guide panel">
         <section aria-labelledby="tips-title">
-          <header class="panel-header">
+          <header class="flex items-start justify-between mb-4">
             <section>
-              <h2 id="tips-title" class="panel-title">Quick Guide</h2>
-              <p class="panel-sub">App navigation tips.</p>
+              <h2 id="tips-title" class="text-lg font-medium text-white mb-1">Quick Guide</h2>
+              <p class="text-sm text-gray-400">App navigation tips.</p>
             </section>
 
             <button
-              class="link-btn"
+              class="text-sm text-blue-400 hover:text-blue-300 transition-colors"
               type="button"
               (click)="toggleTips()"
               [attr.aria-expanded]="showTips()"
@@ -203,16 +202,16 @@
 
           <section id="tips-content">
             @if (showTips()) {
-              <ul class="tip-list">
-                <li><strong>List:</strong> View all your courses in one organized list.</li>
-                <li><strong>Detail:</strong> See course materials, resources, and information.</li>
-                <li><strong>Add/Edit:</strong> Manage course details and resources with forms.</li>
+              <ul class="space-y-2 mb-4">
+                <li class="text-sm text-gray-300"><strong class="text-white">List:</strong> View all your courses in one organized list.</li>
+                <li class="text-sm text-gray-300"><strong class="text-white">Detail:</strong> See course materials, resources, and information.</li>
+                <li class="text-sm text-gray-300"><strong class="text-white">Add/Edit:</strong> Manage course details and resources with forms.</li>
               </ul>
 
-              <nav class="mini-actions" aria-label="Quick shortcuts">
-                <a class="mini" routerLink="/list">All Courses</a>
-                <a class="mini" routerLink="/create">Add Course</a>
-                <a class="mini" href="https://angular.dev" target="_blank" rel="noopener noreferrer">
+              <nav class="flex flex-wrap gap-2" aria-label="Quick shortcuts">
+                <a class="text-xs text-blue-400 hover:text-blue-300 transition-colors" routerLink="/list">All Courses</a>
+                <a class="text-xs text-blue-400 hover:text-blue-300 transition-colors" routerLink="/create">Add Course</a>
+                <a class="text-xs text-blue-400 hover:text-blue-300 transition-colors" href="https://angular.dev" target="_blank" rel="noopener noreferrer">
                   Angular Docs ↗
                 </a>
               </nav>
@@ -222,5 +221,3 @@
       </app-card>
     </aside>
   </section>
-  </section>
-</main>

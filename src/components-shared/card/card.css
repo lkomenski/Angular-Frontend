@@ -1,5 +1,0 @@
-/* Uses global .glass and typography tokens; this is just spacing polish */
-.card {
-  padding: 14px;
-  border-radius: var(--r-lg, 18px);
-}

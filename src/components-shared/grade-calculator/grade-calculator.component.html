@@ -1,13 +1,13 @@
-<section class="grade-calc-container" aria-labelledby="calc-heading">
-  <h2 id="calc-heading" class="calc-title">Grade Calculator</h2>
-  <p class="calc-subtitle">Project your final grade with hypothetical scores</p>
+<section class="max-w-4xl mx-auto" aria-labelledby="calc-heading">
+  <h2 id="calc-heading" class="text-3xl font-bold text-white mb-2">Grade Calculator</h2>
+  <p class="text-gray-300 mb-8">Project your final grade with hypothetical scores</p>
 
   <!-- Course Selection -->
-  <section class="calc-section">
-    <label class="calc-label" for="course-select">Select Course:</label>
+  <section class="mb-6">
+    <label class="block text-sm font-semibold text-white mb-2" for="course-select">Select Course:</label>
     <select 
       id="course-select"
-      class="calc-select"
+      class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer"
       [value]="selectedCourseId() || ''"
       (change)="selectCourse($any($event.target).value ? +$any($event.target).value : null)">
       <option value="">-- Choose a course --</option>
@@ -20,104 +20,107 @@
   @if (selectedCourse()) {
     <!-- Current Grade Display -->
     <app-card>
-      <article class="current-grade">
-        <section class="grade-display">
-          <p class="grade-label">Current Grade</p>
-          <p class="grade-value" [class]="getGradeClass(currentGrade())">
+      <article class="grid grid-cols-1 md:grid-cols-2 gap-8 p-4">
+        <section class="text-center">
+          <p class="text-sm text-gray-400 uppercase tracking-wide mb-3">Current Grade</p>
+          <p class="text-5xl font-bold leading-none mb-2" [class.text-green-400]="getGradeClass(currentGrade()) === 'excellent'" [class.text-blue-400]="getGradeClass(currentGrade()) === 'good'" [class.text-yellow-400]="getGradeClass(currentGrade()) === 'average'" [class.text-red-400]="getGradeClass(currentGrade()) === 'poor'" [class.text-white]="!getGradeClass(currentGrade())">
             {{ currentGrade() !== null ? (currentGrade()!.toFixed(2) + '%') : 'N/A' }}
           </p>
-          <p class="grade-letter">{{ getLetterGrade(currentGrade()) }}</p>
+          <p class="text-xl font-semibold text-gray-300">{{ getLetterGrade(currentGrade()) }}</p>
         </section>
-        <section class="grade-display">
-          <p class="grade-label">Target Grade</p>
-          <p class="grade-value target">{{ selectedCourse()!.targetGrade }}%</p>
-          <p class="grade-letter">{{ getLetterGrade(selectedCourse()!.targetGrade) }}</p>
+        <section class="text-center">
+          <p class="text-sm text-gray-400 uppercase tracking-wide mb-3">Target Grade</p>
+          <p class="text-5xl font-bold leading-none mb-2 text-blue-400">{{ selectedCourse()!.targetGrade }}%</p>
+          <p class="text-xl font-semibold text-gray-300">{{ getLetterGrade(selectedCourse()!.targetGrade) }}</p>
         </section>
       </article>
     </app-card>
 
     <!-- Assignments with Hypothetical Scores -->
     <app-card>
-      <h3 class="section-title">Enter Hypothetical Scores</h3>
-      <p class="section-subtitle">Adjust scores to see how they affect your final grade</p>
+      <h3 class="text-xl font-semibold text-white mb-2">Enter Hypothetical Scores</h3>
+      <p class="text-sm text-gray-400 mb-6">Adjust scores to see how they affect your final grade</p>
 
-      <section class="assignments-table" role="table" aria-label="Hypothetical assignment scores">
-        <header class="table-header" role="row">
-          <div class="col-name">Assignment</div>
-          <div class="col-category">Category</div>
-          <div class="col-weight">Weight</div>
-          <span class="col-score">Score</span>
-          <span class="col-max">Max</span>
-        </header>
+      <section class="overflow-x-auto" role="table" aria-label="Hypothetical assignment scores">
+        <div class="min-w-full">
+          <header class="grid grid-cols-5 gap-4 p-4 bg-white/5 border-b border-white/10 font-medium text-sm text-gray-300 uppercase tracking-wide" role="row">
+            <div>Assignment</div>
+            <div>Category</div>
+            <div>Weight</div>
+            <div>Score</div>
+            <div>Max</div>
+          </header>
 
-        @for (assignment of whatIfAssignments(); track assignment.id) {
-          <article class="table-row" role="row">
-            <div class="col-name">{{ assignment.name }}</div>
-            <div class="col-category">
-              <span class="category-badge">{{ assignment.category }}</span>
-            </div>
-            <div class="col-weight">{{ assignment.weight }}%</div>
-            <div class="col-score">
-              <input 
-                type="number"
-                class="score-input"
-                [value]="assignment.hypotheticalScore"
-                [max]="assignment.pointsPossible"
-                min="0"
-                step="0.5"
-                (input)="updateHypotheticalScore(assignment.id, $any($event.target).value)"
-                placeholder="--"
-              />
-            </div>
-            <div class="col-max">{{ assignment.pointsPossible }}</div>
-          </article>
-        }
+          @for (assignment of whatIfAssignments(); track assignment.id) {
+            <article class="grid grid-cols-5 gap-4 p-4 border-b border-white/5 items-center" role="row">
+              <div class="text-white font-medium">{{ assignment.name }}</div>
+              <div>
+                <span class="px-2 py-1 text-xs bg-purple-500/20 text-purple-300 rounded">{{ assignment.category }}</span>
+              </div>
+              <div class="text-gray-300">{{ assignment.weight }}%</div>
+              <div>
+                <input 
+                  type="number"
+                  class="w-20 px-2 py-1 bg-white/5 border border-white/20 rounded text-white text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  [value]="assignment.hypotheticalScore"
+                  [max]="assignment.pointsPossible"
+                  min="0"
+                  step="0.5"
+                  (input)="updateHypotheticalScore(assignment.id, $any($event.target).value)"
+                  placeholder="--"
+                />
+              </div>
+              <div class="text-gray-300">{{ assignment.pointsPossible }}</div>
+            </article>
+          }
+        </div>
       </section>
     </app-card>
 
     <!-- Projected Grade Display -->
     <app-card>
-      <article class="projected-grade">
-        <h3 class="section-title">Projected Final Grade</h3>
-        <section class="projection-display">
-          <p class="projection-value" [class]="getGradeClass(projectedGrade())">
+      <article class="text-center">
+        <h3 class="text-xl font-semibold text-white mb-6">Projected Final Grade</h3>
+        <section class="mb-6">
+          <p class="text-6xl font-bold leading-none mb-2" [class.text-green-400]="getGradeClass(projectedGrade()) === 'excellent'" [class.text-blue-400]="getGradeClass(projectedGrade()) === 'good'" [class.text-yellow-400]="getGradeClass(projectedGrade()) === 'average'" [class.text-red-400]="getGradeClass(projectedGrade()) === 'poor'" [class.text-white]="!getGradeClass(projectedGrade())">
             {{ projectedGrade().toFixed(2) }}%
           </p>
-          <p class="projection-letter">{{ getLetterGrade(projectedGrade()) }}</p>
+          <p class="text-2xl font-semibold text-gray-300">{{ getLetterGrade(projectedGrade()) }}</p>
         </section>
 
-        <section class="grade-comparison">
-          <article class="comparison-item">
-            <span class="comparison-label">Difference from Current:</span>
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 text-left">
+          <article class="flex justify-between items-center p-3 bg-white/5 rounded-lg">
+            <span class="text-gray-300">Difference from Current:</span>
             <span 
-              class="comparison-value"
-              [class.positive]="gradeDifference() > 0"
-              [class.negative]="gradeDifference() < 0">
+              class="font-semibold"
+              [class.text-green-400]="gradeDifference() > 0"
+              [class.text-red-400]="gradeDifference() < 0"
+              [class.text-gray-300]="gradeDifference() === 0">
               {{ gradeDifference() > 0 ? '+' : '' }}{{ gradeDifference().toFixed(2) }}%
             </span>
           </article>
-          <article class="comparison-item">
-            <span class="comparison-label">Difference from Target:</span>
+          <article class="flex justify-between items-center p-3 bg-white/5 rounded-lg">
+            <span class="text-gray-300">Difference from Target:</span>
             <span 
-              class="comparison-value"
-              [class.positive]="targetDifference() >= 0"
-              [class.negative]="targetDifference() < 0">
+              class="font-semibold"
+              [class.text-green-400]="targetDifference() >= 0"
+              [class.text-red-400]="targetDifference() < 0">
               {{ targetDifference() > 0 ? '+' : '' }}{{ targetDifference().toFixed(2) }}%
             </span>
           </article>
         </section>
 
         @if (targetDifference() >= 0) {
-          <aside class="success-message">
+          <aside class="p-4 bg-green-500/20 border border-green-500/30 rounded-lg text-green-300 mb-6">
             ✅ You're on track to meet your target grade!
           </aside>
         } @else {
-          <aside class="warning-message">
+          <aside class="p-4 bg-yellow-500/20 border border-yellow-500/30 rounded-lg text-yellow-300 mb-6">
             ⚠️ You need {{ Math.abs(targetDifference()).toFixed(2) }}% more to reach your target
           </aside>
         }
 
-        <button class="reset-btn" (click)="resetScores()">
+        <button class="px-6 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors" (click)="resetScores()">
           Reset to Actual Scores
         </button>
       </article>

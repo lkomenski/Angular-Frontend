@@ -9,8 +9,7 @@ import { CourseDataService } from '../../services/course-data.service';
   selector: 'app-semester-selector',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './semester-selector.component.html',
-  styleUrl: './semester-selector.component.css'
+  templateUrl: './semester-selector.component.html'
 })
 export class SemesterSelectorComponent {
   private courseData = inject(CourseDataService);

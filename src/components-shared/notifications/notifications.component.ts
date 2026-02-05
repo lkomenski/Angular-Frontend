@@ -10,8 +10,7 @@ import { CourseDataService } from '../../services/course-data.service';
   selector: 'app-notifications',
   standalone: true,
   imports: [CommonModule, RouterLink],
-  templateUrl: './notifications.component.html',
-  styleUrl: './notifications.component.css'
+  templateUrl: './notifications.component.html'
 })
 export class NotificationsComponent {
   private courseData = inject(CourseDataService);
