@@ -53,7 +53,6 @@ function validInstructorName(control: AbstractControl): ValidationErrors | null 
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, FormFieldComponent],
   templateUrl: './data-collection-form.component.html',
-  styleUrls: ['./data-collection-form.component.css'],
 })
 export class DataCollectionFormComponent {
   private readonly courseData = inject(CourseDataService);

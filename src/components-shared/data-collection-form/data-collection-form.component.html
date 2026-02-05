@@ -1,4 +1,4 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="max-w-2xl mx-auto p-6">
   <app-form-field
     label="Course Name"
     placeholder="Introduction to Computer Science"
@@ -20,28 +20,28 @@
     [control]="form.controls.instructor"
   />
 
-  <section class="resources-section" formArrayName="resources">
-    <header class="resources-header">
-      <h3>Course Resources</h3>
-      <button type="button" class="btn" (click)="addResource()">+ Add Resource</button>
+  <section class="mt-8 p-5 bg-white/3 rounded-xl border border-white/8" formArrayName="resources">
+    <header class="flex justify-between items-center mb-5">
+      <h3 class="text-xl font-semibold text-gray-100 m-0">Course Resources</h3>
+      <button type="button" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors" (click)="addResource()">+ Add Resource</button>
     </header>
 
-    <div *ngFor="let ctrl of resources.controls; let i = index" class="resource-item">
+    <div *ngFor="let ctrl of resources.controls; let i = index" class="mb-4 p-4 bg-black/20 rounded-lg border border-white/6">
       <app-form-field
         [label]="'Resource ' + (i + 1)"
         placeholder="https://example.com/syllabus.pdf"
         type="text"
         [control]="ctrl"
       />
-      <button type="button" class="btn ghost" (click)="removeResource(i)">Remove</button>
+      <button type="button" class="mt-2 px-4 py-2 bg-transparent border border-white/20 text-white hover:bg-white/10 font-medium rounded-lg transition-colors" (click)="removeResource(i)">Remove</button>
     </div>
 
-    <p *ngIf="resources.length === 0" class="empty-message">
+    <p *ngIf="resources.length === 0" class="text-center text-white/50 italic p-5 m-0">
       No resources added yet. Click "Add Resource" to include course materials, syllabi, or helpful links.
     </p>
   </section>
 
-  <button type="submit" class="btn primary">
+  <button type="submit" class="mt-6 w-full px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition-colors">
     Save Course
   </button>
 </form>
