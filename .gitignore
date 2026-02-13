@@ -42,3 +42,7 @@ __screenshots__/
 # System files
 .DS_Store
 Thumbs.db
+
+# Project specific files
+src/models/api.object.ts
+src/services/api.service.ts
